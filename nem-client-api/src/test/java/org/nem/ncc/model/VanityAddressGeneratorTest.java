@@ -106,10 +106,13 @@ public class VanityAddressGeneratorTest {
 				final VanityAddressGenerator.GenerateToken token,
 				final String expectedAddress,
 				final int expectedAttempts) {
+			// Act:
 			token.getFuture().join();
 			final String bestAddress = this.keyPairAddressMap.get(token.getBestKeyPair()).toString();
-			Assert.assertThat(expectedAddress, IsEqual.equalTo(bestAddress));
-			Assert.assertThat(expectedAttempts, IsEqual.equalTo(token.getNumAttempts()));
+
+			// Assert:
+			Assert.assertThat(bestAddress, IsEqual.equalTo(expectedAddress));
+			Assert.assertThat(token.getNumAttempts(), IsEqual.equalTo(expectedAttempts));
 		}
 	}
 
@@ -130,6 +133,8 @@ public class VanityAddressGeneratorTest {
 
 		// Cleanup:
 		token.getFuture().join();
+
+		// Assert:
 		Assert.assertThat(token.getFuture().isDone(), IsEqual.equalTo(true));
 		Assert.assertThat(token.getNumAttempts(), IsEqual.equalTo(100));
 		Assert.assertThat(token.getBestKeyPair(), IsNull.notNullValue());
