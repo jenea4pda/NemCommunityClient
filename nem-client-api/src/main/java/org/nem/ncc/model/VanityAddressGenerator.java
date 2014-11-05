@@ -3,6 +3,7 @@ package org.nem.ncc.model;
 import org.nem.core.crypto.KeyPair;
 import org.nem.core.model.Address;
 
+import java.util.concurrent.*;
 import java.util.function.*;
 
 /**
@@ -26,25 +27,72 @@ public class VanityAddressGenerator {
 	}
 
 	/**
-	 * Generates a vanity key pair.
+	 * Starts generating a vanity address asynchronously.
 	 *
 	 * @param pattern The desired vanity pattern.
 	 * @param maxAttempts The maximum number of generation attempts.
-	 * @return The best key pair.
+	 * @return The token for the generate operation.
 	 */
-	public KeyPair generate(final String pattern, final int maxAttempts) {
+	public GenerateToken generateAsync(final String pattern, final int maxAttempts) {
 		final VanityAddressSelector selector = new VanityAddressSelector(pattern);
-		for (int i = 0; i < maxAttempts; ++i) {
-			final KeyPair keyPair = this.generateKeyPair.get();
-			final Address address = this.getAddressFromKeyPair.apply(keyPair);
-			selector.addCandidate(keyPair, address);
+		return new GenerateToken(selector, maxAttempts);
+	}
 
-			if (selector.hasCompleteMatch()) {
-				break;
-			}
+	/**
+	 * The token returned by generateAsync.
+	 */
+	public class GenerateToken {
+		private final VanityAddressSelector selector;
+		private final CompletableFuture<Void> future;
+		private int numGenerations;
+
+		private GenerateToken(final VanityAddressSelector selector, final int maxAttempts) {
+			this.selector = selector;
+
+			this.future = CompletableFuture.runAsync(() -> {
+				for (int i = 0; i < maxAttempts; ++i) {
+					final KeyPair keyPair = this.generateKeyPair();
+					final Address address = VanityAddressGenerator.this.getAddressFromKeyPair.apply(keyPair);
+					selector.addCandidate(keyPair, address);
+
+					if (selector.hasCompleteMatch()) {
+						break;
+					}
+				}
+			});
 		}
 
-		return selector.getBestKeyPair();
+		private KeyPair generateKeyPair() {
+			++this.numGenerations;
+			return VanityAddressGenerator.this.generateKeyPair.get();
+		}
+
+		/**
+		 * Gets the future associated with this token.
+		 *
+		 * @return The future.
+		 */
+		public CompletableFuture<Void> getFuture() {
+			return this.future;
+		}
+
+		/**
+		 * Gets the number of attempts.
+		 *
+		 * @return The number of attempts.
+		 */
+		public int getNumAttempts() {
+			return this.numGenerations;
+		}
+
+		/**
+		 * Gets the best key pair.
+		 *
+		 * @return The best key pair.
+		 */
+		public KeyPair getBestKeyPair() {
+			return this.selector.getBestKeyPair();
+		}
 	}
 
 	private static class VanityAddressSelector {

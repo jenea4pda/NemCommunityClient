@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class AccountControllerTest {
-	private static final Logger LOGGER = Logger.getLogger(AccountControllerTest.class.getName());
 	private static final byte MAIN_NETWORK_VERSION = NetworkInfo.getMainNetworkInfo().getVersion();
 
 	//region findAccount
@@ -392,26 +391,6 @@ public class AccountControllerTest {
 		Assert.assertThat(viewModel.getKeyPair(), IsNull.notNullValue());
 		Assert.assertThat(viewModel.getKeyPair().getPrivateKey(), IsNull.notNullValue());
 		Assert.assertThat(viewModel.getNetworkVersion(), IsEqual.equalTo(MAIN_NETWORK_VERSION));
-	}
-
-	@Test
-	public void createVanityRealAccountDataReturnsKeyPairViewModelWithMainNetworkVersion() {
-		// Arrange:
-		final TestContext context = new TestContext();
-		final VanityAddressRequest request = new VanityAddressRequest("NEM", 1000);
-
-		// Act:
-		final KeyPairViewModel viewModel = context.controller.createVanityRealAccountData(request);
-
-		// Assert:
-		Assert.assertThat(viewModel.getKeyPair(), IsNull.notNullValue());
-		Assert.assertThat(viewModel.getKeyPair().getPrivateKey(), IsNull.notNullValue());
-		Assert.assertThat(viewModel.getNetworkVersion(), IsEqual.equalTo(MAIN_NETWORK_VERSION));
-
-		final Address address = Address.fromPublicKey(MAIN_NETWORK_VERSION, viewModel.getKeyPair().getPublicKey());
-		final int patternIndex = address.toString().indexOf("NEM");
-		LOGGER.info(String.format("%s generated (pattern index %d)", address, patternIndex));
-		Assert.assertThat(patternIndex, IsNot.not(IsEqual.equalTo(-1)));
 	}
 
 	@Test

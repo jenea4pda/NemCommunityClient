@@ -1,14 +1,17 @@
 package org.nem.ncc.model;
 
-import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.*;
 import org.junit.*;
 import org.nem.core.crypto.KeyPair;
 import org.nem.core.model.Address;
+import org.nem.core.utils.ExceptionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class VanityAddressGeneratorTest {
+
+	//region basic operations
 
 	@Test
 	public void generatorReturnsFirstKeyPairWhenThereAreNoMatches() {
@@ -17,10 +20,10 @@ public class VanityAddressGeneratorTest {
 		final TestContext context = new TestContext(encodedAddresses);
 
 		// Act:
-		final String bestAddress = context.generate("ZZZZ", 2);
+		final VanityAddressGenerator.GenerateToken token = context.generate("ZZZZ", 2);
 
 		// Assert:
-		Assert.assertThat(bestAddress, IsEqual.equalTo("BALO_0"));
+		context.assertToken(token, "BALO_0", 2);
 	}
 
 	@Test
@@ -30,10 +33,10 @@ public class VanityAddressGeneratorTest {
 		final TestContext context = new TestContext(encodedAddresses);
 
 		// Act:
-		final String bestAddress = context.generate("ALPHA", 4);
+		final VanityAddressGenerator.GenerateToken token = context.generate("ALPHA", 4);
 
 		// Assert:
-		Assert.assertThat(bestAddress, IsEqual.equalTo("ALPO_3"));
+		context.assertToken(token, "ALPO_3", 4);
 	}
 
 	@Test
@@ -43,10 +46,10 @@ public class VanityAddressGeneratorTest {
 		final TestContext context = new TestContext(encodedAddresses);
 
 		// Act:
-		final String bestAddress = context.generate("ALPHA", 2);
+		final VanityAddressGenerator.GenerateToken token = context.generate("ALPHA", 2);
 
 		// Assert:
-		Assert.assertThat(bestAddress, IsEqual.equalTo("ALOB_2"));
+		context.assertToken(token, "ALOB_2", 2);
 	}
 
 	@Test
@@ -56,23 +59,23 @@ public class VanityAddressGeneratorTest {
 		final TestContext context = new TestContext(encodedAddresses);
 
 		// Act:
-		final String bestAddress = context.generate("ALPHA", 3);
+		final VanityAddressGenerator.GenerateToken token = context.generate("ALPHA", 3);
 
 		// Assert:
-		Assert.assertThat(bestAddress, IsEqual.equalTo("ALBO_2"));
+		context.assertToken(token, "ALBO_2", 3);
 	}
 
 	@Test
 	public void generatorShortCircuitsWhenFullMatchIsMade() {
 		// Arrange:
-		final List<String> encodedAddresses = Arrays.asList("BALO_2", "ALPHA_5");
+		final List<String> encodedAddresses = Arrays.asList("BALO_2", "ALPHA_5", "BALN_2");
 		final TestContext context = new TestContext(encodedAddresses);
 
-		// Act: (if short-circuiting does not occur, there will be an out of bounds exception)
-		final String bestAddress = context.generate("ALPHA", 1000);
+		// Act:
+		final VanityAddressGenerator.GenerateToken token = context.generate("ALPHA", 1000);
 
 		// Assert:
-		Assert.assertThat(bestAddress, IsEqual.equalTo("ALPHA_5"));
+		context.assertToken(token, "ALPHA_5", 2);
 	}
 
 	private static class TestContext {
@@ -95,9 +98,65 @@ public class VanityAddressGeneratorTest {
 					this.keyPairAddressMap::get);
 		}
 
-		private String generate(final String pattern, final int maxAttempts) {
-			final KeyPair bestKeyPair = this.generator.generate(pattern, maxAttempts);
-			return this.keyPairAddressMap.get(bestKeyPair).toString();
+		private VanityAddressGenerator.GenerateToken generate(final String pattern, final int maxAttempts) {
+			return this.generator.generateAsync(pattern, maxAttempts);
+		}
+
+		private void assertToken(
+				final VanityAddressGenerator.GenerateToken token,
+				final String expectedAddress,
+				final int expectedAttempts) {
+			token.getFuture().join();
+			final String bestAddress = this.keyPairAddressMap.get(token.getBestKeyPair()).toString();
+			Assert.assertThat(expectedAddress, IsEqual.equalTo(bestAddress));
+			Assert.assertThat(expectedAttempts, IsEqual.equalTo(token.getNumAttempts()));
 		}
 	}
+
+	//endregion
+
+	//region
+
+	@Test
+	public void vanityAddressGenerationIsAsync() {
+		// Arrange:
+		final VanityAddressGenerator generator = createRealGenerator();
+
+		// Act:
+		final VanityAddressGenerator.GenerateToken token = generator.generateAsync("NEMNEM", 100);
+
+		// Assert:
+		Assert.assertThat(token.getFuture().isDone(), IsEqual.equalTo(false));
+
+		// Cleanup:
+		token.getFuture().join();
+		Assert.assertThat(token.getFuture().isDone(), IsEqual.equalTo(true));
+		Assert.assertThat(token.getNumAttempts(), IsEqual.equalTo(100));
+		Assert.assertThat(token.getBestKeyPair(), IsNull.notNullValue());
+	}
+
+	@Test
+	public void vanityAddressGenerationCanBeCancelled() {
+		// Arrange:
+		final VanityAddressGenerator generator = createRealGenerator();
+
+		// Act:
+		final VanityAddressGenerator.GenerateToken token = generator.generateAsync("NEMNEM", 100);
+		ExceptionUtils.propagateVoid(() -> Thread.sleep(10));
+		token.getFuture().cancel(true);
+
+		// Assert:
+		Assert.assertThat(token.getFuture().isDone(), IsEqual.equalTo(true));
+		Assert.assertThat(token.getNumAttempts(), IsNot.not(IsEqual.equalTo(0)));
+		Assert.assertThat(token.getNumAttempts(), IsNot.not(IsEqual.equalTo(100)));
+		Assert.assertThat(token.getBestKeyPair(), IsNull.notNullValue());
+	}
+
+	private static VanityAddressGenerator createRealGenerator() {
+		return new VanityAddressGenerator(
+				KeyPair::new,
+				kp -> Address.fromPublicKey(kp.getPublicKey()));
+	}
+
+	//endregion
 }

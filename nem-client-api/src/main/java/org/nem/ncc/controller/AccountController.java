@@ -272,23 +272,6 @@ public class AccountController {
 	}
 
 	/**
-	 * Temporary API for creating a real (main-net) vanity private key during beta.
-	 *
-	 * @param request The vanity request.
-	 * @return A key pair view model.
-	 */
-	@RequestMapping(value = "/account/create-vanity-real-account-data", method = RequestMethod.POST)
-	public KeyPairViewModel createVanityRealAccountData(final VanityAddressRequest request) {
-		final byte version = NetworkInfo.getMainNetworkInfo().getVersion();
-		final VanityAddressGenerator generator = new VanityAddressGenerator(
-				KeyPair::new,
-				kp -> Address.fromPublicKey(version, kp.getPublicKey()));
-
-		final KeyPair keyPair = generator.generate(request.getPattern(), request.getMaxAttempts());
-		return new KeyPairViewModel(keyPair, version);
-	}
-
-	/**
 	 * Temporary API for verifying a real (main-net) private key during beta.
 	 *
 	 * @param viewModel A key pair view model.
