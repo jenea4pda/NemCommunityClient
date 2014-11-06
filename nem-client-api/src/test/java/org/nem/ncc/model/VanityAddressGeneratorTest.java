@@ -146,14 +146,14 @@ public class VanityAddressGeneratorTest {
 		final VanityAddressGenerator generator = createRealGenerator();
 
 		// Act:
-		final VanityAddressGenerator.GenerateToken token = generator.generateAsync("NEMNEM", 100);
+		final VanityAddressGenerator.GenerateToken token = generator.generateAsync("NEMNEM", 1000);
 		ExceptionUtils.propagateVoid(() -> Thread.sleep(10));
 		token.getFuture().cancel(true);
 
 		// Assert:
 		Assert.assertThat(token.getFuture().isDone(), IsEqual.equalTo(true));
 		Assert.assertThat(token.getNumAttempts(), IsNot.not(IsEqual.equalTo(0)));
-		Assert.assertThat(token.getNumAttempts(), IsNot.not(IsEqual.equalTo(100)));
+		Assert.assertThat(token.getNumAttempts(), IsNot.not(IsEqual.equalTo(1000)));
 		Assert.assertThat(token.getBestKeyPair(), IsNull.notNullValue());
 	}
 

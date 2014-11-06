@@ -3,7 +3,6 @@ package org.nem.ncc.controller.requests;
 import net.minidev.json.JSONObject;
 import org.hamcrest.core.IsEqual;
 import org.junit.*;
-import org.nem.core.model.Address;
 import org.nem.core.serialization.*;
 import org.nem.ncc.test.*;
 
@@ -20,6 +19,16 @@ public class VanityAddressRequestTest {
 		// Assert:
 		Assert.assertThat(request.getPattern(), IsEqual.equalTo("NEM"));
 		Assert.assertThat(request.getMaxAttempts(), IsEqual.equalTo(123));
+	}
+
+	@Test
+	public void requestCannotBeCreatedWithMaxAttemptsLessThanOne() {
+		// Assert:
+		for (final int maxAttempts : Arrays.asList(-1, 0)) {
+			ExceptionAssert.assertThrows(
+					v -> new VanityAddressRequest("NEM", maxAttempts),
+					IllegalArgumentException.class);
+		}
 	}
 
 	@Test
@@ -44,6 +53,16 @@ public class VanityAddressRequestTest {
 			ExceptionAssert.assertThrows(
 					v -> action.accept(null),
 					SerializationException.class);
+		}
+	}
+
+	@Test
+	public void requestCannotBeDeserializedWithMaxAttemptsLessThanOne() {
+		// Assert:
+		for (final int maxAttempts : Arrays.asList(-1, 0)) {
+			ExceptionAssert.assertThrows(
+					v -> this.createRequestFromJson("NEM", maxAttempts),
+					IllegalArgumentException.class);
 		}
 	}
 
