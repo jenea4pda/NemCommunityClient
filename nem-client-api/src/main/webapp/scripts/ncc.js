@@ -133,12 +133,18 @@ define(function(require) {
                         }
                 }
             },
+            nodeBooting: function() {
+                return this.get('status.booting') || this.get('nisStatus.code') === Utils.config.STATUS_BOOTING;
+            },
             nodeBooted: function() {
                 var nisStatus = this.get('nisStatus.code');
                 return nisStatus === Utils.config.STATUS_BOOTED || nisStatus === Utils.config.STATUS_SYNCHRONIZED;
             },
             nisUnavailable: function() {
                 return this.get('nisStatus.code') === Utils.config.STATUS_STOPPED;
+            },
+            enableManualBoot: function() {
+                return !(this.get('nisUnavailable') || this.get('nodeBooting') || this.get('nodeBooted'));
             },
             nisSynchronized: function() {
                 // 5 status code is not implemented yet

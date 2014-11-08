@@ -41,7 +41,7 @@
 									<span>{{texts.dashboard.importance.unknown}}</span>
 								</button>
 							{{/}}
-							{{^status.lostConnection || nisUnavailable}}
+							{{^status.lostConnection || nisUnavailable || activeAccount.status === 'UNKNOWN'}}
 								{{#activeAccount.status === 'LOCKED'}}
 									<button type="button" class="importanceTile-harvestButton importanceTile-harvestButton--notHarvesting icon-play" on-click="startHarvesting">
 										<span>{{texts.dashboard.importance.start}}</span>
@@ -119,7 +119,7 @@
                                     {{/}}
 									<td class="txList-cell txList-col--date">{{.formattedDate}}</td>
                                     {{#.isSelf || .isOutgoing}}
-                                        <td class="txList-cell txList-col--sender" title="{{formattedSender}}" on-mouseover="registerToolTip">{{.formattedRecipient}}</td>
+                                        <td class="txList-cell txList-col--sender" title="{{formattedRecipient}}" on-mouseover="registerToolTip">{{.formattedRecipient}}</td>
                                     {{/}}
                                     {{#.isIncoming}}
                                         <td class="txList-cell txList-col--sender" title="{{formattedSender}}" on-mouseover="registerToolTip">{{.formattedSender}}</td>

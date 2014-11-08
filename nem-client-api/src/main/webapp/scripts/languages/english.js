@@ -148,9 +148,7 @@ define({
 			},
 			transactionDetails: {
 				title: 'Transaction Details',
-				// this might be block or transaction ID
 				id: 'ID',
-				// this might be block or transaction Hash
 				hash: 'Hash',
 				type: 'Transaction Type',
 				pending: 'Pending',

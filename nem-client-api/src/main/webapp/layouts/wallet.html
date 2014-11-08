@@ -78,7 +78,7 @@
 							<li class="dropdownMenu-item disabled">
 								{{texts.wallet.actions.exportWallet}}
 							</li>
-							<li class="dropdownMenu-item {{# nisUnavailable || nodeBooted}}disabled{{/}} dropdownMenu-item--separator" on-click="bootLocalNode">
+							<li class="dropdownMenu-item {{^enableManualBoot}}disabled{{/}} dropdownMenu-item--separator" on-click="bootLocalNode">
 								{{texts.wallet.actions.bootLocalNode}}
 							</li>
 							<li class="dropdownMenu-item" on-click="refreshInfo">
@@ -118,7 +118,7 @@
 						<p class="account-info-line account-label {{^.label}}account-label--blank{{/}} fullSidebarOnly">{{.label ? .label : texts.wallet.noLabel}}</p>
 					{{/}}
 				</div>
-				<button class="account-actionsButton fullSidebarOnly {{#active.accountActions}}active{{/}}" on-click="toggleOn('accountActions')">
+				<button class="account-actionsButton {{#active.accountActions}}active{{/}}" on-click="toggleOn('accountActions')">
 					<span class="account-actionsButton--gear icon-gear"></span>
 					<span class="account-actionsButton--arrow icon-arrow-down-medium"></span>
 				</button>
@@ -274,7 +274,8 @@
 		</div>
 		<div class="txConfirm-line">
 			<span class="txConfirm-label">{{texts.modals.sendNem.txConfirm.to}}</span>
-			<span class="txConfirm-value">{{txData.formattedRecipient}}
+			<span class="txConfirm-value">
+				<span class="txConfirm-recipient">{{txData.formattedRecipient}}</span>
 				{{#txData.recipientLabel}}
 					(<span class="txConfirm-recipientLabel">{{txData.recipientLabel}}</span>)
 				{{/}}

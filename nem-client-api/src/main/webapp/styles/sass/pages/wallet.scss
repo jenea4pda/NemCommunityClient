@@ -427,6 +427,20 @@ $account-actions-width: 33px;
 			}
 		}
 
+		.account-actionsButton {
+			position: static;
+			width: 100%;
+			height: auto;
+			line-height: normal;
+			background-color: transparent;
+		}
+
+		.account-actionsDropdown {
+			top: $account-height;
+			right: auto;
+			left: 100%;
+		}
+
 		.account-select {
 			top: 0;
 			left: 100%;
@@ -782,6 +796,10 @@ $txConfirm-label-width: 130px;
 
 .txConfirm-actions {
 	margin-top: 20px;
+}
+
+.txConfirm-recipient {
+	text-transform: uppercase;
 }
 
 .txConfirm-totalLabel,

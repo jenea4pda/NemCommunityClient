@@ -20,7 +20,7 @@ define({
 			305: 'Serwer Infrastruktury NEM jest niedostępny.',
 			306: 'Wystąpił błąd, którego dewelopery nie przewidzieli. Przepraszamy, ponowna próba może rozwiązać problem. W innym wypadku proszę zwrócić się o pomoc do deweloperów NEM NIS/NCC.',
 			400: 'Brakujący lub niewłaściwy parametr.',
-			401: 'This operation cannot be completed because it might leak a private key by sending it to a remote NIS.',
+			401: 'Ta operacja nie może zostać wykonana ponieważ może to spowodować wyciek klucza prywatnego poprzez wysłanie go do zdalnego NIS.',
 			404: 'Żądany zasób nie został odnaleziony.',
 			500: 'Wystąpił błąd, którego dewelopery nie przewidzieli. Przepraszamy, ponowna próba może rozwiązać problem. W innym wypadku proszę zwrócić się o pomoc do deweloperów NEM NIS/NCC.',
 			600: 'NCC wymaga uruchomienia serwera NIS aby wysyłać i przyjmować transakcje z chmury NEM. Użyj menu NCC aby uruchomić lokalny węzeł.',
@@ -36,9 +36,9 @@ define({
 			708: 'Sygnatura czasowa transakcji jest zbyt daleko w przyszłości.',
 			709: 'Konto nieznane. Konto musi wziąć udział w przynajmniej jednej transakcji (wychodzącej lub przychodzącej) aby było znane sieci.',
 			901: 'Wystąpił błąd podczas przechodzenia w tryb offline.',
-			1000: "The private key and the public key you have provided mismatch.",
-			1001: 'The public key and the address you have provided mismatch.',
-			1002: 'The address does not belong to the main network.'
+			1000: 'Klucz prywatny i klucz publiczny nie pasują do siebie.',
+			1001: 'Klucz publiczny i adres nie pasują do siebie..',
+			1002: 'Adres nie należy do głównej sieci..'
 		},
 		common: {
 			success: 'Sukces', //title of the Success message modals
@@ -111,27 +111,27 @@ define({
 				sending: 'Wysyłanie...',
 				successMessage: 'Transakcja została zrealizowana!',
 				txConfirm: {
-					title: 'Confirm Transaction',
-					amount: 'Amount',
-					to: 'To',
-					fee: 'Fee',
-					dueBy: 'Due by',
-					hours: 'hour(s)',
+					title: 'Potwierdź transakcję',
+					amount: 'Ilość',
+					to: 'Do',
+					fee: 'Opłata',
+					dueBy: 'Ważne przez',
+					hours: 'godzin(y)',
 					total: 'Total',
-					message: 'Message',
-					encrypted: 'Message is encrypted',
-					noMessage: 'No message',
-					cancel: 'Cancel',
-					confirm: 'Confirm',
-					sending: 'Sending...'
+					message: 'Wiadomość',
+					encrypted: 'Wiadomość jest zaszyfrowana',
+					noMessage: 'Brak wiadomości',
+					cancel: 'Anuluj',
+					confirm: 'Potwierdź',
+					sending: 'Wysyłanie...'
 				},
 				notBootedWarning: {
 					title: 'Węzeł nie został uruchomiony!',
 					message: 'Lokalny węzeł musi być uruchomiony zanim będzie można wysyłać NEM!'
 				},
 				bootingWarning: {
-					title: 'Node is being booted',
-					message: 'Please wait until booting process is done to send your transaction.'
+					title: 'Węzeł uruchamia się.',
+					message: 'Zaczekaj, aż proces uruchamiania zakończy się, aby wysłać transakcję.'
 				}
 			},
 			clientInfo: {
@@ -148,9 +148,7 @@ define({
 			},
 			transactionDetails: {
 				title: 'Szczegóły transakcji',
-				// this might be block or transaction ID
 				id: 'ID',
-				// this might be block or transaction Hash
 				hash: 'Hasz',
 				type: 'Typ transakcji',
 				pending: 'Oczekujące',
@@ -208,21 +206,21 @@ define({
 					incorrect: {
 						title: 'Hmm...',
 						message: "Klucz prywatny, który właśnie wpisałeś jest nieprawidłowy! Proszę, sprawdź go i wpisz ponownie.",
-						tryAgain: 'Try to enter again',
-						seeOriginal: 'See the original data'
+						tryAgain: 'Spróbuj wpisać ponownie',
+						seeOriginal: 'Zobacz oryginalne dane'
 					},
 					recheck: 'Sprawdź'
 				},
 				ok: 'OK'
 			},
 			verifyRealAccountData: {
-				title: 'Verify real account data',
+				title: 'Sprawdzenie poprawności prawdziwego konta',
 				message: 'Re-enter your saved address, public key and private key below to check if they match',
-				address: 'Address',
-				publicKey: 'Public key',
-				privateKey: 'Private key',
-				dataMatched: 'Everything seems good, your entered address, public key, and private key match.',
-				verify: 'Verify'
+				address: 'Adres',
+				publicKey: 'Klucz publiczny',
+				privateKey: 'Klucz prywatny',
+				dataMatched: 'Wszystko w porządku, adres, klucz puliczny i prywatny pasują do siebie.',
+				verify: 'Weryfikacja'
 			},
 			addAccount: {
 				title: 'Dodaj istniejące konto',
@@ -389,7 +387,7 @@ define({
 				exportWallet: 'Exportuj Portfel',
 				createAccount: 'Stwórz Nowe Konto',
 				createRealAccountData: 'Utwórz prawdziwe konto',
-				verifyRealAccountData: 'Verify real account data',
+				verifyRealAccountData: 'Weryfikacja prawdziwego konta',
 				addAccount: 'Dodaj Istniejące Konto',
 				changeAccountLabel: 'Zmień Etykietę Konta',
 				setPrimary: 'Ustaw jako Konto Podstawowe',
@@ -419,7 +417,7 @@ define({
 				title: 'Twoje aktywa'
 			},
 			importance: {
-				title: 'Importance score',
+				title: 'Poziom Importancji',
 				unknown: 'Status nieznany',
 				start: 'Rozpocznij zbieranie',
 				harvesting: 'Zbieranie bloków',
@@ -475,7 +473,7 @@ define({
 			news: {
 				titleTooltip: 'Aktualności'
 			},
-			notAvailable: 'Niedostępne w wersji alfa'
+			notAvailable: 'Niedostępne'
 		},
 		transactions: {
 			title: 'Transakcje',
@@ -507,7 +505,7 @@ define({
 				},
 				noMessage: 'Brak wiadomości',
 				encrypted: 'Wiadomość jest zaszyfrowana',
-				view: 'Widok',
+				view: 'Zobacz',
 				pending: 'Oczekuje',
 				noTransactions: 'Nie wykonano jeszcze żadnych transakcji',
 				loading: 'Ładowanie kolejnych transakcji...'

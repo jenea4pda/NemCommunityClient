@@ -111,27 +111,27 @@ define({
 				sending: "Изпращам...",
 				successMessage: "Транзакцията беше изпратена успешно!",
 				txConfirm: {
-					title: 'Confirm Transaction',
-					amount: 'Amount',
-					to: 'To',
-					fee: 'Fee',
-					dueBy: 'Due by',
-					hours: 'hour(s)',
-					total: 'Total',
-					message: 'Message',
-					encrypted: 'Message is encrypted',
-					noMessage: 'No message',
-					cancel: 'Cancel',
-					confirm: 'Confirm',
-					sending: 'Sending...'
+					title: "Потвърдете транзакцията",
+					amount: "Сума",
+					to: "До",
+					fee: "Такса",
+					dueBy: "Време до края",
+					hours: "час(а)",
+					total: "Общо",
+					message: "Съобщение",
+					encrypted: "Съобщението е криптирано",
+					noMessage: "Без съобщение",
+					cancel: "Отмени",
+					confirm: "Потвърди",
+					sending: "Изпращам..."
 				},
 				notBootedWarning: {
-					title: "Локалният възел не можа да се стартира!",
-					message: "Локалният възел трябва да бъде стартиран преди да можете да изпращате NEM!"
+					title: "Възелът не бе стартиран!",
+					message: "Локалният възел трябва да бъде стартиран преди да можете да изпратите NEM"
 				},
 				bootingWarning: {
-					title: 'Node is being booted',
-					message: 'Please wait until booting process is done to send your transaction.'
+					title: "Възелът се стартира",
+					message: "Моля почакайте докато възелът се стартира за да изпратите вашата транзакция."
 				}
 			},
 			clientInfo: {
@@ -148,9 +148,7 @@ define({
 			},
 			transactionDetails: {
 				title: "Детайли на транзакцията",
-				// this might be block or transaction ID
 				id: "ID",
-				// this might be block or transaction Hash
 				hash: "Hash",
 				type: "Тип на транзакцията",
 				pending: "В очакване",
@@ -333,7 +331,7 @@ define({
 				rightTitle: "Вече сте <em>NEM</em>ber?",
 				rightButton: "Отворете вашия портфейл",
 				openButton: "Отвори",
-				walletsFound: "Намерени <strong>{{1}}</strong> <em>Портфейли</em>",
+				walletsFound: "Намерени <strong>{{1}}</strong> <em>Портфейл(и)</em>",
 				copyright: "Фотография от <em>Cas Cornelissen</em>"
 			},
 			carousel: {

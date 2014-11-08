@@ -20,12 +20,12 @@ define({
 			305: "NIS inicializando.",
 			306: "Ocorreu um erro desconhecido. Pedimos desculpas por esse problema. Talvez uma nova nova tentativa dê certo; caso contrário, informe aos desenvolvedores da NEM no fórum oficial forum.nemcoin.com.",
 			400: "Está faltando algum parâmetro ou os dados são inválidos (letras no lugar de números, por exemplo).",
-			401: 'This operation cannot be completed because it might leak a private key by sending it to a remote NIS.',
+			401: 'Esta operação não pode ser completada pois ela pode expor a chave privada enviando-a para um NIS remoto.',
 			404: "O arquivo solicitado não pode ser encontrado..",
-			500: "ocorreu um erro desconhecido. Por vavor, reinicie o programa, caso não resolva, contate os desenvolvedores através do fórum forum.nemcoin.com.",
+			500: "ocorreu um erro desconhecido. Por favor, reinicie o programa, caso não resolva, contate os desenvolvedores através do fórum forum.nemcoin.com.",
 			600: "NCC requer que o NIS seja inicializado. Por favor, vá em cliente NCC para inicializar o nó local via menu.",
 			601: "O NIS já foi inicializado.",
-			700: "Falha na colheita. Geralmente esse problema está relacionado com o tanto de NEMs na conta. Para colheitar são necessários, pelo menos, 1000 NEMs.",
+			700: "Falha na colheita. Geralmente esse problema está relacionado com o tanto de NEMs na conta. Para colheitar são necessários  pelo menos 1000 NEMs.",
 			701: "O prazo final fornecido está no passado. O prazo limite deve estar dentro do período de um dia.",
 			702: "O prazo final fornecido está no futuro. O prazo limite deve estar dentro do período de um dia.",
 			703: "Saldo insuficiente para realizar a transação.",
@@ -36,9 +36,9 @@ define({
 			708: "A data da ID de transação está muito no futuro.",
 			709: "Conta desconhecida, Por favor, faça uma transação para conseguir uma chave pública.",
 			901: "Erro na configuração do modo off-line.",
-			1000: "The private key and the public key you have provided mismatch.",
-			1001: 'The public key and the address you have provided mismatch.',
-			1002: 'The address does not belong to the main network.'
+			1000: "A chave privada e a chave pública que você forneceu não combinam. Você digitou certo?.",
+			1001: 'A chave publica e o endereço que você forneceu não combinam.',
+			1002: 'O endereço não pertence a rede principal de peers.'
 		},
 		common: {
 			success: "Successo",
@@ -50,7 +50,7 @@ define({
 				nisUnavailable: "NIS não inicializado",
 				nisStarting: "NIS está inicializando...",
 				notBooted: "NIS requere inicialização. Por favor, abra a carteira para ativar o auto-boot ou inicialize o nó manualmente.",
-				booting: "NIS Inicializando...",
+				booting: "NIS inicializando...",
 				nisInfoNotAvailable: "Informações de NIS não disponível. Recuperando informações...",
 				synchronizing: "NIS está sincronizando com o bloco {{1}}, encontrado {{2}} atrás.",
 				daysBehind: {
@@ -111,27 +111,27 @@ define({
 				sending: "Enviando...",
 				successMessage: "A transação foi enviada!",
 				txConfirm: {
-					title: 'Confirm Transaction',
-					amount: 'Amount',
-					to: 'To',
-					fee: 'Fee',
-					dueBy: 'Due by',
-					hours: 'hour(s)',
+					title: 'Confirmar Transação',
+					amount: 'Quantidade',
+					to: 'Para',
+					fee: 'Taxa',
+					dueBy: 'Devido por',
+					hours: 'hora(s)',
 					total: 'Total',
-					message: 'Message',
-					encrypted: 'Message is encrypted',
-					noMessage: 'No message',
-					cancel: 'Cancel',
-					confirm: 'Confirm',
-					sending: 'Sending...'
+					message: 'Mensagem',
+					encrypted: 'Mensagem está criptografada',
+					noMessage: 'Sem mensagem',
+					cancel: 'Cancelar',
+					confirm: 'Confirmar',
+					sending: 'Enviando...'
 				},
 				notBootedWarning: {
 					title: "O nó não foi inicializado!",
 					message: "O nó local precisa ser inicializado para fazer transações!"
 				},
 				bootingWarning: {
-					title: 'Node is being booted',
-					message: 'Please wait until booting process is done to send your transaction.'
+					title: 'O Nó está sendo inicializado',
+					message: 'Por favor, espere até o nó inicializar completamente para poder enviar sua transação.'
 				}
 			},
 			clientInfo: {
@@ -148,9 +148,7 @@ define({
 			},
 			transactionDetails: {
 				title: "Detalhes da transação",
-				// this might be block or transaction ID
 				id: "ID",
-				// this might be block or transaction Hash
 				hash: "Hash",
 				type: "Tipo de transação",
 				pending: "Pendente",
@@ -216,13 +214,13 @@ define({
 				ok: "OK"
 			},
 			verifyRealAccountData: {
-				title: 'Verify real account data',
-				message: 'Re-enter your saved address, public key and private key below to check if they match',
-				address: 'Address',
-				publicKey: 'Public key',
-				privateKey: 'Private key',
-				dataMatched: 'Everything seems good, your entered address, public key, and private key match.',
-				verify: 'Verify'
+				title: 'Verificar conta Verdadeira - Versão final',
+				message: 'Entre novamente, logo abaixo, com seu endereço, chave pública, chave privada para verificar se está tudo certo.',
+				address: 'Endereço',
+				publicKey: 'Chave Pública',
+				privateKey: 'Chave Privada',
+				dataMatched: 'Tudo parece certo! A chave pública, chave privada e endereço que você entrou combinam!',
+				verify: 'Verificar'
 			},
 			addAccount: {
 				title: "Adicionar uma Carteira existente",
@@ -278,7 +276,7 @@ define({
 				remove: "Remover"
 			},
 			nisUnavailable: {
-				title: "NIS não está disponivel",
+				title: "NIS não está disponível",
 				message: "NIS não está respondendo, aguardando conexão"
 			},
 			shutdown: {
@@ -354,8 +352,8 @@ define({
 						"Você também pode configurar acesso a um servidor remoto <strong>NIS</strong>."
 					],
 					listItems: [
-						"Tenha multiplas carteiras",
-						"Defina multiplas carteiras para serem incluidas em uma carteira"
+						"Tenha múltiplas carteiras",
+						"Defina múltiplas carteiras para serem incluídas em uma carteira"
 					]
 				}, {
 					title: "O que é &#42;NIS?",
@@ -389,7 +387,7 @@ define({
 				exportWallet: "Exportar carteira",
 				createAccount: "Criar uma nova Conta",
 				createRealAccountData: "Criar dados da conta real",
-				verifyRealAccountData: 'Verify real account data',
+				verifyRealAccountData: 'Verificar dados da conta Verdadeira',
 				addAccount: "Adicionar uma conta existente",
 				changeAccountLabel: "Trocar a identificação da carteira",
 				setPrimary: "Definir como conta primária",
@@ -397,7 +395,7 @@ define({
 				clientInfo: "Informações do cliente",
 				closeWallet: "Fechar carteira",
 				closeProgram: "Fechar programa",
-				copyClipboard: "Copiar para a área de trasferência"
+				copyClipboard: "Copiar para a área de transferência"
 			},
 			nav: [
 				"Painel Administrativo",
@@ -515,7 +513,7 @@ define({
 		},
 		harvestedBlocks: {
 			title: "Blocos colhidos",
-			feeEarned: "Taxas ganhas com a colheita dos ultimos 25 blocos",
+			feeEarned: "Taxas ganhas com a colheita dos últimos 25 blocos",
 			table: {
 				columns: [
 					"Altura do bloco",

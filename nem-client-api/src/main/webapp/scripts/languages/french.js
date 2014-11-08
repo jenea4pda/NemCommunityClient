@@ -20,7 +20,7 @@ define({
 			305: "Le serveur d'infrastructure NEM n'est pas disponible.",
 			306: "Une erreur que l'équipe de développement n'avait pas anticipée s'est produite. Nous vous présentons nos excuses et nous espérons qu'un nouvel essai va régler ce problème. Sinon, ouvrez un billet d'incident auprès de la communauté NIS/NCC de NEM.",
 			400: "Certains paramètres sont manquants ou invalides.",
-			401: 'This operation cannot be completed because it might leak a private key by sending it to a remote NIS.',
+			401: "Cette opération ne peut être effectuée car elle pourrait divulguer votre clé privée en l'envoyant à un server NIS distant.",
 			404: "La ressource que vous avez demandé ne peut être trouvée.",
 			500: "Une erreur que l'équipe de développement n'avait pas anticipée s'est produite. Nous vous présentons nos excuses et nous espérons qu'un nouvel essai va régler ce problème. Sinon, ouvrez un billet d'incident auprès de la communauté NIS/NCC de NEM.",
 			600: "NCC requiert que le serveur NIS soit démarré pour pouvoir envoyer et recevoir des transactions vers le nuage NEM. S'il vous plait, utilisez le menu NCC pour démarrer le noeud local.",
@@ -36,9 +36,9 @@ define({
 			708: "TL'horodatage de la transaction trop loin dans le futur.",
 			709: "Ce compte est inconnu. Un compte à besoin de faire partie d'au moins une transaction (comme expéditeur ou destinataire) pour être connue du réseau.",
 			901: "Il y a une erreur lors de la mise en place du mode déconnecté.",
-			1000: "The private key and the public key you have provided mismatch.",
-			1001: 'The public key and the address you have provided mismatch.',
-			1002: 'The address does not belong to the main network.'
+			1000: "La clé privée et la clé publique que vous avez fournies ne correspondent pas.",
+			1001: "La clé publique et l'adresse que vous avez fourni ne correspondent pas.",
+			1002: "L'adresse ne fait pas partie du réseau principal."
 		},
 		common: {
 			success: "Succès",
@@ -111,19 +111,19 @@ define({
 				sending: "Envoi...",
 				successMessage: "La transaction a été envoyé avec succès!",
 				txConfirm: {
-					title: 'Confirm Transaction',
+					title: "Confirmez la transaction",
 					amount: 'Amount',
-					to: 'To',
+					to: 'À',
 					fee: 'Fee',
 					dueBy: 'Due by',
 					hours: 'hour(s)',
 					total: 'Total',
-					message: 'Message',
-					encrypted: 'Message is encrypted',
-					noMessage: 'No message',
-					cancel: 'Cancel',
+					message: "Message",
+					encrypted: "Le message est chiffré",
+					noMessage: "Pas de message",
+					cancel: "Annuler",
 					confirm: 'Confirm',
-					sending: 'Sending...'
+					sending: "Envoi..."
 				},
 				notBootedWarning: {
 					title: "Le noeud n'a pas été démarré!",
@@ -148,9 +148,7 @@ define({
 			},
 			transactionDetails: {
 				title: "Détails de la transaction",
-				// this might be block or transaction ID
 				id: "ID",
-				// this might be block or transaction Hash
 				hash: "Hash",
 				type: "Type de transaction",
 				pending: "En attente",
@@ -208,21 +206,21 @@ define({
 					incorrect: {
 						title: "Hmm...",
 						message: "La clé privée que vous venez d'entrer n'est pas correcte ! S'il vous plaît, entrez votre clé privée de nouveau.",
-						tryAgain: 'Try to enter again',
-						seeOriginal: 'See the original data'
+						tryAgain: "Essayez de l'entrer encore une fois",
+						seeOriginal: "Voir les données originales."
 					},
 					recheck: "Vérifier"
 				},
 				ok: "Ok"
 			},
 			verifyRealAccountData: {
-				title: 'Verify real account data',
-				message: 'Re-enter your saved address, public key and private key below to check if they match',
-				address: 'Address',
-				publicKey: 'Public key',
-				privateKey: 'Private key',
-				dataMatched: 'Everything seems good, your entered address, public key, and private key match.',
-				verify: 'Verify'
+				title: "Vérifier les données réelles de compte",
+				message: "Entrez l'adresse que vous avez enregistrée à nouveau ainsi que la clé publique et une clé privée pour vérifier si elles correspondent.",
+				address: "Addresse",
+				publicKey: "Clé publique",
+				privateKey: "Clé privée",
+				dataMatched: "Tout semble bon : l'adresse indiquée, la clé publique et clé privée correspondance .",
+				verify: "Vérifier"
 			},
 			addAccount: {
 				title: "Ajouter un compte existant",
@@ -389,7 +387,7 @@ define({
 				exportWallet: "Exporter un portefeuille",
 				createAccount: "Créer un nouveau compte",
 				createRealAccountData: "Create real account data",
-				verifyRealAccountData: 'Verify real account data',
+				verifyRealAccountData: "",
 				addAccount: "Ajouter un compte existant",
 				changeAccountLabel: "Modifier l'étiquette du compte",
 				setPrimary: "Définir comme compte primaire",
@@ -524,7 +522,7 @@ define({
 					"Honoraires"
 				],
 				noBlocks: "Aucun blocs récoltés ",
-				loading: "Voir les blocs récoltés plus âgées"
+				loading: "Chargement de blocs récoltées supplémentaire"
 			},
 			harvesting: {
 				unknown: "Statut inconnu",

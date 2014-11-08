@@ -84,6 +84,7 @@
                                 name: 'wallet',
                                 type: 'text',
                                 readonly: true,
+                                unimportant: true,
                                 label: {
                                     content: ncc.get('texts.modals.activateRemote.wallet')
                                 }
@@ -99,6 +100,7 @@
                                 name: 'account',
                                 type: 'text',
                                 readonly: true,
+                                unimportant: true,
                                 label: {
                                     content: ncc.get('texts.modals.activateRemote.account')
                                 }
@@ -135,6 +137,7 @@
                                 name: 'wallet',
                                 type: 'text',
                                 readonly: true,
+                                unimportant: true,
                                 label: {
                                     content: ncc.get('texts.modals.deactivateRemote.wallet')
                                 }
@@ -150,6 +153,7 @@
                                 name: 'account',
                                 type: 'text',
                                 readonly: true,
+                                unimportant: true,
                                 label: {
                                     content: ncc.get('texts.modals.deactivateRemote.account')
                                 }
@@ -186,6 +190,7 @@
                                 name: 'wallet',
                                 type: 'text',
                                 readonly: true,
+                                unimportant: true,
                                 label: {
                                     content: ncc.get('texts.modals.startRemote.wallet')
                                 }
@@ -201,6 +206,7 @@
                                 name: 'account',
                                 type: 'text',
                                 readonly: true,
+                                unimportant: true,
                                 label: {
                                     content: ncc.get('texts.modals.startRemote.account')
                                 }
@@ -229,6 +235,7 @@
                                 name: 'wallet',
                                 type: 'text',
                                 readonly: true,
+                                unimportant: true,
                                 label: {
                                     content: ncc.get('texts.modals.stopRemote.wallet')
                                 }
@@ -244,6 +251,7 @@
                                 name: 'account',
                                 type: 'text',
                                 readonly: true,
+                                unimportant: true,
                                 label: {
                                     content: ncc.get('texts.modals.stopRemote.account')
                                 }

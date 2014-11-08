@@ -78,6 +78,10 @@ define(['NccModal', 'Utils'], function(NccModal, Utils) {
                 }, args.silent
             );
         },
+        validateTx: function() {
+            if (!this.get('recipientValid')) return false;
+            return true;
+        },
         resetDefaultData: function() {
             this.set('formattedAmount', '0');
             this.set('formattedRecipient', '');

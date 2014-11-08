@@ -153,35 +153,41 @@ define(function() {
             return parseInt(nem.replace('.', '') + trailingZeros);
         },
         formatCurrency: function(amount, dimTrailings, noLimitFractionalPart, noFixedDecimalPlaces) { // amount is in mNEM
-            var nem = Utils.addThousandSeparators(Math.floor(Utils.toNem(amount)));
+            var nem = Math.floor(Utils.toNem(amount));
+            var integerPart = Utils.addThousandSeparators(nem);
             var mNem = Math.floor(amount % 1000000);
-            if (!noFixedDecimalPlaces) {
-                mNem = Utils.minDigits(mNem, 6);
-            }
-            if (!noLimitFractionalPart) {
-                mNem = mNem.substring(0, Utils.config.fractionalDigits);
+
+            if (noFixedDecimalPlaces) {
+                // Remove trailing zeroes
+                while (mNem > 0 && mNem % 10 === 0) {
+                    mNem = mNem / 10;
+                }
             }
 
-            if (dimTrailings) {
-                mNem = mNem.toString(10);
-                var cutPos = mNem.length - 1;
-                while (mNem.charAt(cutPos) === '0') {
+            var decimalPart = mNem.toString(10);
+            if (!noLimitFractionalPart) {
+                decimalPart = decimalPart.substring(0, Utils.config.fractionalDigits);
+            }
+
+            if (dimTrailings) {                
+                var cutPos = decimalPart.length - 1;
+                while (decimalPart.charAt(cutPos) === '0') {
                     cutPos--;
                 }
                 cutPos++;
 
-                var clearPart = mNem.substring(0, cutPos);
-                var dimmedPart = mNem.substring(cutPos, mNem.length);
+                var clearPart = decimalPart.substring(0, cutPos);
+                var dimmedPart = decimalPart.substring(cutPos, decimalPart.length);
                 if (dimmedPart) {
                     if (clearPart) {
-                        return nem + ncc.get('texts.preferences.decimalSeparator') + clearPart + '<span class="dimmed">' + dimmedPart + '</span>';
+                        return integerPart + ncc.get('texts.preferences.decimalSeparator') + clearPart + '<span class="dimmed">' + dimmedPart + '</span>';
                     } else {
-                        return nem + '<span class="dimmed">' + ncc.get('texts.preferences.decimalSeparator') + dimmedPart + '</span>';
+                        return integerPart + '<span class="dimmed">' + ncc.get('texts.preferences.decimalSeparator') + dimmedPart + '</span>';
                     }
                 }
             }
 
-            return nem + ((noFixedDecimalPlaces && !mNem) ? '' : (ncc.get('texts.preferences.decimalSeparator') + mNem));
+            return integerPart + ((noFixedDecimalPlaces && !mNem) ? '' : (ncc.get('texts.preferences.decimalSeparator') + decimalPart));
         },
         // @param {string} amount
         convertCurrencyFormat: function(amount, oldThousandSeparator, newThousandSeparator, oldDecimalSeparator, newDecimalSeparator) {
@@ -277,8 +283,8 @@ define(function() {
             tx.formattedRecipient = Utils.formatAddress(tx.recipient);
             tx.formattedFee = Utils.formatCurrency(tx.fee, true);
             tx.formattedAmount = Utils.formatCurrency(tx.amount, true);
-            tx.formattedFullFee = Utils.formatCurrency(tx.fee, false, true, false);
-            tx.formattedFullAmount = Utils.formatCurrency(tx.amount, false, true, false);
+            tx.formattedFullFee = Utils.formatCurrency(tx.fee, false, true, true);
+            tx.formattedFullAmount = Utils.formatCurrency(tx.amount, false, true, true);
             tx.formattedDate = Utils.formatDate(tx.timeStamp, 'M dd, yyyy hh:mm:ss');
             return tx;
         },
