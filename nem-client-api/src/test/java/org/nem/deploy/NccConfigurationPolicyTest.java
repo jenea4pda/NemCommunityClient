@@ -55,9 +55,11 @@ public class NccConfigurationPolicyTest {
 	public void loadConfigReturnsValidConfiguration() {
 		// Arrange:
 		final NccConfigurationPolicy policy = createPolicy();
+		final NemCommandLine cmdLine = new NemCommandLine(new ArrayList<Option>());
+		cmdLine.parse(new String[0]);
 
 		// Act:
-		final CommonConfiguration configuration = policy.loadConfig(new NemCommandLine(new ArrayList<Option>()));
+		final CommonConfiguration configuration = policy.loadConfig(cmdLine);
 
 		// Assert:
 		Assert.assertThat(configuration, IsNull.notNullValue());
