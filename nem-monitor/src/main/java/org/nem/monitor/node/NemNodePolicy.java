@@ -30,6 +30,8 @@ public interface NemNodePolicy {
 	 */
 	public File getLockFile();
 
+	// TODO 20141108 J-T: why did you change this from NisApiId
+
 	/**
 	 * Maps the specified api url to the url path.
 	 *

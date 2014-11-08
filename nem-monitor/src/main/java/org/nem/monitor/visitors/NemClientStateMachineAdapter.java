@@ -9,6 +9,10 @@ import java.util.function.*;
 
 import com.github.oxo42.stateless4j.*;
 
+// TODO 20141108 J-T: i like this, but since it is pretty critical, it really needs to be tested thoroughly
+// TODO 20141108 J-T: is there any benefit on having this state machine vs two; one for nis and one for ncc
+// > i guess in launching the browser?
+
 /**
  * Visitor that collects node status changes to derive next steps for starting nodes.
  */
@@ -40,6 +44,8 @@ public class NemClientStateMachineAdapter implements NodeStatusVisitor {
 		this.nisStateMachine = new StateMachine<NemClientStateMachineAdapter.State, NemStatus>(State.Nis_Unknown, this.nemClientNis);
 	}
 
+	// TODO 20141108 J-T: any reason you can't pass these to the constructor (maybe in an options class that you use a builder to create)
+
 	public void setStartNccConfigurationSupplier(final Supplier<ConfigurationViewModel> configNcc) {
 		this.configNcc = configNcc;
 	}
@@ -61,6 +67,8 @@ public class NemClientStateMachineAdapter implements NodeStatusVisitor {
 	}
 
 	protected void initializeStateMachine() {
+
+		// TODO 20141108: at least have two initialize functions; one for ncc and one for nis
 
 		// Ncc State Machine
 		nemClientNcc.configure(State.Ncc_Unknown).permit(NemStatus.STOPPED, State.Ncc_Stopped_A);
@@ -142,10 +150,14 @@ public class NemClientStateMachineAdapter implements NodeStatusVisitor {
 	}
 
 	private boolean isNccUsingLocalNis() {
+		// TODO 20141108: J-T i thought we had a more direct way of doing this?
 		ConfigurationViewModel configModel = configNcc.get();
 		return (configModel != null) && (configModel.getNisEndpoint().equals(NodeEndpoint.fromHost("localhost")));
 	}
 
+	// TODO 20141108 J-T: does this really need to be public? seems like an implementation detail
+	// TODO 20141108: also might make sense for two enums (one for ncc and one for nis)
+	// TODO 20141108: what are the letter postfixes for? and consider commenting the states ;) (i'm not sure what manual is)
 	public enum State {
 		Ncc_Unknown, Ncc_Stopped_A, Ncc_Spawned_E, Ncc_Starting_B, Ncc_Running_D, Ncc_Manual_C, Nis_Unknown, Nis_Stopped_M, Nis_Spawned_N, Nis_Stopped_R, Nis_Running_O, Nis_Manual_P
 	}

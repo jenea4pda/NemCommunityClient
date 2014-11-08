@@ -33,6 +33,7 @@ public class NodeStatusToIconDescriptorAdapter implements NodeStatusVisitor {
 	public NodeStatusToIconDescriptorAdapter(final Consumer<IconDescriptor> iconDescriptorConsumer) {
 		this.iconDescriptorConsumer = iconDescriptorConsumer;
 
+		// TODO 20141108: why did you comment this out?
 //		this.notifyStatus(NemNodeType.NIS, NemStatus.UNKNOWN);
 	}
 

@@ -68,6 +68,7 @@ public class NodeManagerTest {
 		}
 
 		private TestContext(final boolean hasBrowserGui) {
+			// TODO 20141108 J-T: can you explicitly set NodeType?
 			final NemNodePolicy nodePolicy = Mockito.mock(NemNodePolicy.class);
 			Mockito.when(nodePolicy.getEndpoint()).thenReturn(NodeEndpoint.fromHost("10.0.0.12"));
 			Mockito.when(nodePolicy.hasBrowserGui()).thenReturn(hasBrowserGui);

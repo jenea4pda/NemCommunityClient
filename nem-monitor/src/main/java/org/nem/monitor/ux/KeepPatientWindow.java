@@ -9,10 +9,15 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+// TODO 20141108 J-T: i guess i would say comment this class
+// TODO 20141108 J-T: since this is in the ux package i'm less concerned about tests (since we aren't set up for e2e tests)
+
 public class KeepPatientWindow extends JFrame {
 	public static final KeepPatientWindow window = new KeepPatientWindow();
 	
 	private JPanel contentPane;
+	// TODO 20141108 J-T since these are really label,progress-bar pairs, i would suggest having a private internal class and two instance (one for each pair)
+	// > i also don't like the progress bar names ;)
 	private JLabel lblNisServer;
 	private JProgressBar progressBar;
 	private JProgressBar progressBar_1;
@@ -26,15 +31,7 @@ public class KeepPatientWindow extends JFrame {
 	}
 
 	public static void openWindow() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					window.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> window.setVisible(true));
 	}
 
 	/**
@@ -117,6 +114,9 @@ public class KeepPatientWindow extends JFrame {
 		setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2 - getSize().height / 2);
 
 	}
+
+	// TODO 20141108 J-T typo in "description"
+	// TODO 20141108 J-T the lambdas don't need {}
 
 	public NodeStatusToStatusDescriptionAdapter addNccDesriptionUpdater() {
 		return new NodeStatusToStatusDescriptionAdapter(NemNodeType.NCC, description -> {

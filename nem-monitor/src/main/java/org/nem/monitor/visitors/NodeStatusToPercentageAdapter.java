@@ -5,6 +5,8 @@ import org.nem.monitor.node.NemNodeType;
 
 import java.util.function.Consumer;
 
+// TODO 20141108: should definitely have tests; fix javadoc (broken record)
+
 /**
  * Visitor that keeps node menu item text in sync with status changes.
  */
@@ -38,6 +40,7 @@ public class NodeStatusToPercentageAdapter implements NodeStatusVisitor {
 	}
 
 	private Integer calculateNisPercentage(final NemStatus status) {
+		// TODO 20141108: switch is a bit verbose; consider using a Map instead
 		Integer percentage = 0;
 		switch (status) {
 			case SYNCHRONIZED:

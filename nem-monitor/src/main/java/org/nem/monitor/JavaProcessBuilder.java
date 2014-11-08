@@ -6,6 +6,8 @@ import org.nem.monitor.node.NemNodeType;
 import java.io.*;
 import java.util.logging.Logger;
 
+// TODO 20141108: fix javadoc remove commented out code
+
 /**
  * An abstraction on top of ProcessBuilder for Java processes.
  */

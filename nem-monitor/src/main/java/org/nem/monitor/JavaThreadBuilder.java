@@ -7,12 +7,14 @@ import java.io.*;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
+// TODO 20141108: fix javadoc remove commented out code
+
 /**
  * An abstraction on top of ProcessBuilder for Java processes.
  */
 public class JavaThreadBuilder implements JavaSpawnBuilder {
 	private static final Logger LOGGER = Logger.getLogger(JavaThreadBuilder.class.getName());
-	final public static ExecutorService service = Executors.newFixedThreadPool(2);
+	final public static ExecutorService service = Executors.newFixedThreadPool(2); // TODO 20141108: why 2?
 
 	private String[] arguments;
 
@@ -33,6 +35,7 @@ public class JavaThreadBuilder implements JavaSpawnBuilder {
 	 * @param logFile The log file.
 	 */
 	public void setLogFile(final File logFile) {
+		// TODO 20141108: why is this all commented out?
 		// this.builder.redirectErrorStream(true);
 		// this.builder.redirectOutput(ProcessBuilder.Redirect.appendTo(logFile));
 		// this.builder.directory(logFile.getParentFile());

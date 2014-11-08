@@ -62,53 +62,55 @@ public class NemMonitor {
 			LOGGER.info("setting up system tray");
 
 			// fail if the system tray is not supported
-				if (!SystemTray.isSupported()) {
-					throw new SystemTrayException("SystemTray is not supported");
-				}
+			if (!SystemTray.isSupported()) {
+				throw new SystemTrayException("SystemTray is not supported");
+			}
 
-				final SystemTray tray = SystemTray.getSystemTray();
-				final JavaLauncher launcher = new JavaLauncher(nemFolder, isStartedViaWebStart());
-				final WebBrowser webBrowser = new WebBrowser();
-				final HttpMethodClient<ErrorResponseDeserializerUnion> httpClient = createHttpMethodClient();
+			// TODO 20141108: i would probably move this to a separate function too
+			final SystemTray tray = SystemTray.getSystemTray();
+			final JavaLauncher launcher = new JavaLauncher(nemFolder, isStartedViaWebStart());
+			final WebBrowser webBrowser = new WebBrowser();
+			final HttpMethodClient<ErrorResponseDeserializerUnion> httpClient = createHttpMethodClient();
 
-				final NisNodePolicy nisPolicy = new NisNodePolicy(nemFolder);
-				final NemConnector nisConnector = createConnector(nisPolicy, httpClient);
-				final NodeManager nisManager = new NodeManager(nisPolicy, commandLine.getNisConfig(), nisConnector, launcher, webBrowser);
+			final NisNodePolicy nisPolicy = new NisNodePolicy(nemFolder);
+			final NemConnector nisConnector = createConnector(nisPolicy, httpClient);
+			final NodeManager nisManager = new NodeManager(nisPolicy, commandLine.getNisConfig(), nisConnector, launcher, webBrowser);
 
-				final NccNodePolicy nccPolicy = new NccNodePolicy(nemFolder);
-				final NemConnector nccConnector = createConnector(nccPolicy, httpClient);
-				final NodeManager nccManager = new NodeManager(nccPolicy, commandLine.getNccConfig(), nccConnector, launcher, webBrowser);
+			final NccNodePolicy nccPolicy = new NccNodePolicy(nemFolder);
+			final NemConnector nccConnector = createConnector(nccPolicy, httpClient);
+			final NodeManager nccManager = new NodeManager(nccPolicy, commandLine.getNccConfig(), nccConnector, launcher, webBrowser);
 
-				final TrayIconBuilder builder = new TrayIconBuilder(createHttpMethodClient());
-				builder.addStatusMenuItems(nisManager, nisPolicy);
-				builder.addSeparator();
-				builder.addStatusMenuItems(nccManager, nccPolicy);
-				builder.addSeparator();
-				builder.addExitMenuItem(tray);
-				builder.addExitAndShutdownMenuItem(tray);
-				
-				final NemClientStateMachineAdapter statemachine = new NemClientStateMachineAdapter();
-				statemachine.setStartNccEventConsumer(text -> nccManager.launch());
-				statemachine.setStartNisEventConsumer(text -> nisManager.launch());
-				statemachine.setStartNccConfigurationSupplier(nccManager::getConfig);
-				statemachine.setStartBrowserEventConsumer(text -> {
-					nccManager.launchBrowser();
-					KeepPatientWindow.window.dispose();
-				});
-				statemachine.setLocalNisConfiguredEventConsumer(localNis -> KeepPatientWindow.window.updateLocalNisInformation(localNis));
-				builder.getVisitors().add(statemachine);
-				
-				builder.getVisitors().add(KeepPatientWindow.window.addNccDesriptionUpdater());
-				builder.getVisitors().add(KeepPatientWindow.window.addNisDesriptionUpdater());
-				builder.getVisitors().add(KeepPatientWindow.window.addNccProgressUpdater());
-				builder.getVisitors().add(KeepPatientWindow.window.addNisProgressUpdater());
+			final TrayIconBuilder builder = new TrayIconBuilder(createHttpMethodClient());
+			builder.addStatusMenuItems(nisManager, nisPolicy);
+			builder.addSeparator();
+			builder.addStatusMenuItems(nccManager, nccPolicy);
+			builder.addSeparator();
+			builder.addExitMenuItem(tray);
+			builder.addExitAndShutdownMenuItem(tray);
 
-				try {
-					tray.add(builder.create());
-				} catch (final AWTException e) {
-					throw new SystemTrayException("Unable to add icon to system tray", e);
-				}
+			// TODO 20141108: can you move this to a separate function? also stateMachine
+			final NemClientStateMachineAdapter statemachine = new NemClientStateMachineAdapter();
+			statemachine.setStartNccEventConsumer(text -> nccManager.launch());
+			statemachine.setStartNisEventConsumer(text -> nisManager.launch());
+			statemachine.setStartNccConfigurationSupplier(nccManager::getConfig);
+			statemachine.setStartBrowserEventConsumer(text -> {
+				nccManager.launchBrowser();
+				KeepPatientWindow.window.dispose();
 			});
+			statemachine.setLocalNisConfiguredEventConsumer(localNis -> KeepPatientWindow.window.updateLocalNisInformation(localNis));
+			builder.getVisitors().add(statemachine);
+
+			builder.getVisitors().add(KeepPatientWindow.window.addNccDesriptionUpdater());
+			builder.getVisitors().add(KeepPatientWindow.window.addNisDesriptionUpdater());
+			builder.getVisitors().add(KeepPatientWindow.window.addNccProgressUpdater());
+			builder.getVisitors().add(KeepPatientWindow.window.addNisProgressUpdater());
+
+			try {
+				tray.add(builder.create());
+			} catch (final AWTException e) {
+				throw new SystemTrayException("Unable to add icon to system tray", e);
+			}
+		});
 	}
 
 	private static HttpMethodClient<ErrorResponseDeserializerUnion> createHttpMethodClient() {

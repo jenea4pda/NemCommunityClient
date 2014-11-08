@@ -2,6 +2,7 @@ package org.nem.monitor.visitors;
 
 import org.nem.monitor.*;
 import org.nem.monitor.node.NemNodePolicy;
+// TODO 20141108: i guess i am missing something? the monitor is now referencing ncc?
 import org.nem.ncc.controller.viewmodels.ConfigurationViewModel;
 
 import java.util.logging.Logger;
@@ -60,7 +61,9 @@ public class NodeManager {
 			this.browser.navigate(this.nodePolicy.getEndpoint());
 		}
 	}
-	
+
+	// TODO 20141108: comment ;)
+
 	public ConfigurationViewModel getConfig() {
 		return this.connector.getConfiguration();
 	}

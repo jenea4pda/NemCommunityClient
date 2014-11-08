@@ -7,6 +7,8 @@ import org.apache.commons.cli.Option;
 import java.util.Arrays;
 
 public class MonitorCommandLine {
+	// TODO 20141108 J-T: i guess i will see this later; but you're expecting the commandline params
+	// > to be properties files instead of jnlp urls now?
 	private static final String NCC_CONFIG = "nccConfig";
 	private static final String NCC_CONFIG_DESCRIPTION = "Config file name for starting NCC.";
 	private static final String NIS_CONFIG = "nisConfig";

@@ -31,6 +31,8 @@ public class TrayIconBuilder {
 	private final Collection<NodeStatusVisitor> visitors = new ArrayList<>();
 	private final Collection<NemNodePolicy> nodePolicies = new ArrayList<>();
 
+	// TODO 20141108 J-T: fix javadocs
+
 	/**
 	 * Creates a new builder.
 	 *
@@ -90,6 +92,7 @@ public class TrayIconBuilder {
 		}
 
 		actionMenuItem.addActionListener(actionAdapter);
+		// TODO 20141108 J-T: remove commented out code
 		// Handled via State Machine
 		// if (this.isStartedViaWebStart) {
 		// // simulate a click, which will trigger a webstart launch
@@ -136,10 +139,14 @@ public class TrayIconBuilder {
 	}
 
 	private CompletableFuture<Void> shutdownAll() {
-		final List<CompletableFuture> futures = this.nodePolicies.stream().map(np -> this.createConnector(np).shutdown().exceptionally(e -> {
-			LOGGER.warning(String.format("an error occurred while attempting to shutdown %s: %s", np, e));
-			return null;
-		})).collect(Collectors.toList());
+		final List<CompletableFuture> futures = this.nodePolicies.stream()
+				.map(np -> this.createConnector(np)
+						.shutdown()
+						.exceptionally(e -> {
+							LOGGER.warning(String.format("an error occurred while attempting to shutdown %s: %s", np, e));
+							return null;
+						}))
+				.collect(Collectors.toList());
 		return CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]));
 	}
 
@@ -158,7 +165,11 @@ public class TrayIconBuilder {
 		for (final NemNodePolicy nodePolicy : this.nodePolicies) {
 			final NemNodeType nodeType = nodePolicy.getNodeType();
 			final NemConnector connector = this.createConnector(nodePolicy);
-			new AsyncTimer(() -> connector.getStatus().thenAccept(status -> visitor.notifyStatus(nodeType, status)), 250, new UniformDelayStrategy(1000), null);
+			new AsyncTimer(
+					() -> connector.getStatus().thenAccept(status -> visitor.notifyStatus(nodeType, status)),
+					250,
+					new UniformDelayStrategy(1000),
+					null);
 		}
 
 		this.trayIcon.setPopupMenu(this.popup);
@@ -166,9 +177,9 @@ public class TrayIconBuilder {
 	}
 
 	private NemConnector createConnector(final NemNodePolicy nodePolicy) {
-		final DefaultAsyncNemConnector<String> connector = new DefaultAsyncNemConnector<>(this.client, r -> {
-			throw new NemNodeExpectedException();
-		});
+		final DefaultAsyncNemConnector<String> connector = new DefaultAsyncNemConnector<>(
+				this.client,
+				r -> { throw new NemNodeExpectedException(); });
 		connector.setAccountLookup(null);
 		return new NemConnector(nodePolicy, connector);
 	}

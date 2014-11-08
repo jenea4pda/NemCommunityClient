@@ -10,6 +10,8 @@ import java.nio.file.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
+// TODO 20141108: tests; fix javadoc (broken record ;))
+
 /**
  * Class that provides functionality for spawning a new Java process.
  */
@@ -21,6 +23,7 @@ public class JavaLauncher {
 
 	/**
 	 * Creates a new launcher.
+	 * TODO 20141108: i think passing in processBuilderFactory would make this class more testable
 	 *
 	 * @param nemFolder The base NEM folder.
 	 */

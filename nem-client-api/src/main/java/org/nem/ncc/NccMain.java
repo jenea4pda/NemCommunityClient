@@ -28,6 +28,7 @@ public class NccMain {
 	private final NccScheduler scheduler;
 
 	public NccMain(final NccScheduler scheduler) {
+		// TODO 20141108 J-T: we should inject common starter
 		final String nccFolder = Paths.get(CommonStarter.NCC_INSTANCE.getConfiguration().getNemFolder(), "ncc").toString();
 		verifyDirectory(new File(nccFolder));
 
