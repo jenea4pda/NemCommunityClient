@@ -22,9 +22,9 @@ public class KeyPairViewModel implements SerializableEntity {
 	 */
 	public KeyPairViewModel(final KeyPair keyPair, final byte networkVersion) {
 		this.keyPair = keyPair;
+		this.networkVersion = networkVersion;
 		this.addressText = Address.fromPublicKey(this.networkVersion, this.keyPair.getPublicKey()).getEncoded();
 		this.vanityText = "";
-		this.networkVersion = networkVersion;
 	}
 
 	/**

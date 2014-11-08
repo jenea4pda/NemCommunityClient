@@ -1,12 +1,10 @@
 package org.nem.ncc.model;
 
 import org.nem.core.crypto.KeyPair;
-import org.nem.core.model.Address;
 import org.nem.ncc.controller.viewmodels.KeyPairViewModel;
 import org.nem.ncc.model.VanityAddressGenerator.GenerateToken;
 
 import java.util.*;
-
 import javax.swing.AbstractListModel;
 
 /**
