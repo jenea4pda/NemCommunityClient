@@ -4,11 +4,9 @@ import org.nem.core.async.*;
 import org.nem.core.connect.*;
 import org.nem.core.connect.client.DefaultAsyncNemConnector;
 import org.nem.monitor.*;
-import org.nem.monitor.config.LanguageSupport;
 import org.nem.monitor.node.*;
 import org.nem.monitor.visitors.*;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -18,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.swing.ImageIcon;
 
 /**
  * A builder that is used to construct the system tray icon.

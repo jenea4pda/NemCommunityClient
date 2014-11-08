@@ -1,5 +1,7 @@
 package org.nem.monitor.config;
 
+import org.nem.core.i18n.LanguageSupport;
+
 import org.junit.Test;
 
 public class LanguageSupportTest {

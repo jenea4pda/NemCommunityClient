@@ -33,9 +33,9 @@ public class VanityAddressGenerator {
 	 * @param maxAttempts The maximum number of generation attempts.
 	 * @return The token for the generate operation.
 	 */
-	public GenerateToken generateAsync(final String pattern, final int maxAttempts) {
+	public GenerateToken generateAsync(final String pattern, final int maxAttempts, final Consumer<GenerateToken> matchConsumer) {
 		final VanityAddressSelector selector = new VanityAddressSelector(pattern);
-		return new GenerateToken(selector, maxAttempts);
+		return new GenerateToken(selector, maxAttempts, matchConsumer);
 	}
 
 	/**
@@ -43,23 +43,24 @@ public class VanityAddressGenerator {
 	 */
 	public class GenerateToken {
 		private final VanityAddressSelector selector;
-		private final CompletableFuture<Void> future;
+		private final FutureTask<Void> future;
 		private int numGenerations;
 
-		private GenerateToken(final VanityAddressSelector selector, final int maxAttempts) {
+		private GenerateToken(final VanityAddressSelector selector, final int maxAttempts, final Consumer<GenerateToken> matchConsumer) {
 			this.selector = selector;
-
-			this.future = CompletableFuture.runAsync(() -> {
-				for (int i = 0; i < maxAttempts; ++i) {
+			this.future = new FutureTask<Void>(() -> {
+				for (int i = 0; i < maxAttempts && !Thread.currentThread().isInterrupted(); ++i) {
 					final KeyPair keyPair = this.generateKeyPair();
 					final Address address = VanityAddressGenerator.this.getAddressFromKeyPair.apply(keyPair);
-					selector.addCandidate(keyPair, address);
-
-					if (selector.hasCompleteMatch()) {
-						break;
+					if(selector.addCandidate(keyPair, address)) {
+						matchConsumer.accept(this);
 					}
 				}
+				
+				return null;
 			});
+			
+			CompletableFuture.runAsync(future);
 		}
 
 		private KeyPair generateKeyPair() {
@@ -72,7 +73,7 @@ public class VanityAddressGenerator {
 		 *
 		 * @return The future.
 		 */
-		public CompletableFuture<Void> getFuture() {
+		public FutureTask<Void> getFuture() {
 			return this.future;
 		}
 
@@ -98,42 +99,25 @@ public class VanityAddressGenerator {
 	private static class VanityAddressSelector {
 		private final String pattern;
 		private KeyPair bestKeyPair;
-		private int bestMatchIndex = Integer.MAX_VALUE;
-		private int bestMatchLength;
 
 		public VanityAddressSelector(final String pattern) {
 			this.pattern = pattern;
-		}
-
-		public boolean hasCompleteMatch() {
-			return this.pattern.length() == this.bestMatchLength;
 		}
 
 		public KeyPair getBestKeyPair() {
 			return this.bestKeyPair;
 		}
 
-		public void addCandidate(final KeyPair keyPair, final Address address) {
-			int matchIndex = -1;
-			int matchLength = 0;
-
+		public boolean addCandidate(final KeyPair keyPair, final Address address) {
 			final String encodedAddress = address.toString();
-			for (int i = this.pattern.length(); i >= this.bestMatchLength; --i) {
-				final String subPattern = this.pattern.substring(0, i);
-				matchIndex = encodedAddress.indexOf(subPattern);
-				if (matchIndex >= 0) {
-					matchLength = subPattern.length();
-					break;
-				}
-			}
-
-			if (matchLength < this.bestMatchLength || (matchLength == this.bestMatchLength && matchIndex >= this.bestMatchIndex)) {
-				return;
+			
+			if(!encodedAddress.contains(pattern)) {
+				return false;
 			}
 
 			this.bestKeyPair = keyPair;
-			this.bestMatchIndex = matchIndex;
-			this.bestMatchLength = matchLength;
+
+			return true;
 		}
 	}
 }

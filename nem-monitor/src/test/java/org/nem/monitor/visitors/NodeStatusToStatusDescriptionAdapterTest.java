@@ -3,8 +3,9 @@ package org.nem.monitor.visitors;
 import org.hamcrest.core.IsEqual;
 import org.junit.*;
 import org.mockito.*;
+
+import org.nem.core.i18n.LanguageSupport;
 import org.nem.core.model.NemStatus;
-import org.nem.monitor.config.LanguageSupport;
 import org.nem.monitor.node.NemNodeType;
 
 import java.util.function.Consumer;

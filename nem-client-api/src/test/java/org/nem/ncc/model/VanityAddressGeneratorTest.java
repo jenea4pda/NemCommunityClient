@@ -2,19 +2,21 @@ package org.nem.ncc.model;
 
 import org.hamcrest.core.*;
 import org.junit.*;
+
 import org.nem.core.crypto.KeyPair;
 import org.nem.core.model.Address;
 import org.nem.core.utils.ExceptionUtils;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class VanityAddressGeneratorTest {
 
-	//region basic operations
+	// region basic operations
 
 	@Test
-	public void generatorReturnsFirstKeyPairWhenThereAreNoMatches() {
+	public void generatorReturnsFirstKeyPairWhenThereAreNoMatches() throws InterruptedException, ExecutionException {
 		// Arrange:
 		final List<String> encodedAddresses = Arrays.asList("BALO_0", "ALBO_0");
 		final TestContext context = new TestContext(encodedAddresses);
@@ -27,7 +29,7 @@ public class VanityAddressGeneratorTest {
 	}
 
 	@Test
-	public void generatorReturnsLongestMatchingString() {
+	public void generatorReturnsLongestMatchingString() throws InterruptedException, ExecutionException {
 		// Arrange:
 		final List<String> encodedAddresses = Arrays.asList("ABOB_1", "ALOB_2", "ALPO_3", "ZZZZ_0");
 		final TestContext context = new TestContext(encodedAddresses);
@@ -40,7 +42,7 @@ public class VanityAddressGeneratorTest {
 	}
 
 	@Test
-	public void generatorOnlyLooksForSubstringsFromStartOfPattern() {
+	public void generatorOnlyLooksForSubstringsFromStartOfPattern() throws InterruptedException, ExecutionException {
 		// Arrange:
 		final List<String> encodedAddresses = Arrays.asList("ALOB_2", "PHAA_3");
 		final TestContext context = new TestContext(encodedAddresses);
@@ -53,7 +55,7 @@ public class VanityAddressGeneratorTest {
 	}
 
 	@Test
-	public void generatorPrefersEarlierMatchesToLaterMatches() {
+	public void generatorPrefersEarlierMatchesToLaterMatches() throws InterruptedException, ExecutionException {
 		// Arrange:
 		final List<String> encodedAddresses = Arrays.asList("BALO_2", "ALBO_2", "BOAL_2");
 		final TestContext context = new TestContext(encodedAddresses);
@@ -66,7 +68,7 @@ public class VanityAddressGeneratorTest {
 	}
 
 	@Test
-	public void generatorShortCircuitsWhenFullMatchIsMade() {
+	public void generatorShortCircuitsWhenFullMatchIsMade() throws InterruptedException, ExecutionException {
 		// Arrange:
 		final List<String> encodedAddresses = Arrays.asList("BALO_2", "ALPHA_5", "BALN_2");
 		final TestContext context = new TestContext(encodedAddresses);
@@ -83,9 +85,7 @@ public class VanityAddressGeneratorTest {
 		private final Map<KeyPair, Address> keyPairAddressMap;
 
 		public TestContext(final List<String> encodedAddresses) {
-			final List<KeyPair> keys = encodedAddresses.stream()
-					.map(encodedAddress -> KeyPair.random())
-					.collect(Collectors.toList());
+			final List<KeyPair> keys = encodedAddresses.stream().map(encodedAddress -> KeyPair.random()).collect(Collectors.toList());
 
 			this.keyPairAddressMap = new HashMap<>();
 			for (int i = 0; i < encodedAddresses.size(); ++i) {
@@ -93,21 +93,17 @@ public class VanityAddressGeneratorTest {
 			}
 
 			final int i[] = new int[] { 0 };
-			this.generator = new VanityAddressGenerator(
-					() -> keys.get(i[0]++),
-					this.keyPairAddressMap::get);
+			this.generator = new VanityAddressGenerator(() -> keys.get(i[0]++), this.keyPairAddressMap::get);
 		}
 
 		private VanityAddressGenerator.GenerateToken generate(final String pattern, final int maxAttempts) {
-			return this.generator.generateAsync(pattern, maxAttempts);
+			return this.generator.generateAsync(pattern, maxAttempts, token -> {
+			});
 		}
 
-		private void assertToken(
-				final VanityAddressGenerator.GenerateToken token,
-				final String expectedAddress,
-				final int expectedAttempts) {
+		private void assertToken(final VanityAddressGenerator.GenerateToken token, final String expectedAddress, final int expectedAttempts) throws InterruptedException, ExecutionException {
 			// Act:
-			token.getFuture().join();
+			token.getFuture().get();
 			final String bestAddress = this.keyPairAddressMap.get(token.getBestKeyPair()).toString();
 
 			// Assert:
@@ -116,23 +112,23 @@ public class VanityAddressGeneratorTest {
 		}
 	}
 
-	//endregion
+	// endregion
 
-	//region
+	// region
 
 	@Test
-	public void vanityAddressGenerationIsAsync() {
+	public void vanityAddressGenerationIsAsync() throws InterruptedException, ExecutionException {
 		// Arrange:
 		final VanityAddressGenerator generator = createRealGenerator();
 
 		// Act:
-		final VanityAddressGenerator.GenerateToken token = generator.generateAsync("NEMNEM", 100);
+		final VanityAddressGenerator.GenerateToken token = generator.generateAsync("NEMNEM", 100, null);
 
 		// Assert:
 		Assert.assertThat(token.getFuture().isDone(), IsEqual.equalTo(false));
 
 		// Cleanup:
-		token.getFuture().join();
+		token.getFuture().get();
 
 		// Assert:
 		Assert.assertThat(token.getFuture().isDone(), IsEqual.equalTo(true));
@@ -146,7 +142,7 @@ public class VanityAddressGeneratorTest {
 		final VanityAddressGenerator generator = createRealGenerator();
 
 		// Act:
-		final VanityAddressGenerator.GenerateToken token = generator.generateAsync("NEMNEM", 1000);
+		final VanityAddressGenerator.GenerateToken token = generator.generateAsync("NEMNEM", 1000, null);
 		ExceptionUtils.propagateVoid(() -> Thread.sleep(10));
 		token.getFuture().cancel(true);
 
@@ -158,10 +154,8 @@ public class VanityAddressGeneratorTest {
 	}
 
 	private static VanityAddressGenerator createRealGenerator() {
-		return new VanityAddressGenerator(
-				KeyPair::new,
-				kp -> Address.fromPublicKey(kp.getPublicKey()));
+		return new VanityAddressGenerator(KeyPair::new, kp -> Address.fromPublicKey(kp.getPublicKey()));
 	}
 
-	//endregion
+	// endregion
 }

@@ -10,7 +10,9 @@ import org.nem.ncc.exceptions.NccException;
  */
 public class KeyPairViewModel implements SerializableEntity {
 	private final KeyPair keyPair;
+	private final String addressText;
 	private final byte networkVersion;
+	private final String vanityText;
 
 	/**
 	 * Creates a key pair view model.
@@ -20,7 +22,22 @@ public class KeyPairViewModel implements SerializableEntity {
 	 */
 	public KeyPairViewModel(final KeyPair keyPair, final byte networkVersion) {
 		this.keyPair = keyPair;
+		this.addressText = Address.fromPublicKey(this.networkVersion, this.keyPair.getPublicKey()).getEncoded();
+		this.vanityText = "";
 		this.networkVersion = networkVersion;
+	}
+
+	/**
+	 * Creates a key pair view model.
+	 *
+	 * @param keyPair The key pair.
+	 * @param networkVersion The network version.
+	 */
+	public KeyPairViewModel(final KeyPair keyPair, final String vanityText, final byte networkVersion) {
+		this.keyPair = keyPair;
+		this.networkVersion = networkVersion;
+		this.addressText = Address.fromPublicKey(this.networkVersion, this.keyPair.getPublicKey()).getEncoded();
+		this.vanityText = vanityText;
 	}
 
 	/**
@@ -32,6 +49,8 @@ public class KeyPairViewModel implements SerializableEntity {
 		final PrivateKey privateKey = PrivateKey.fromHexString(deserializer.readString("privateKey"));
 		final PublicKey publicKey = PublicKey.fromHexString(deserializer.readOptionalString("publicKey"));
 		final Address address = Address.fromEncoded(deserializer.readString("address"));
+		this.addressText = address.getEncoded();
+		this.vanityText = deserializer.readString("vanityText");
 
 		this.networkVersion = NetworkInfo.fromAddress(address).getVersion();
 		if (!addressIsDerivedFromPublicKey(publicKey, this.networkVersion, address)) {
@@ -62,6 +81,14 @@ public class KeyPairViewModel implements SerializableEntity {
 		return this.networkVersion;
 	}
 
+	public String getAddressText() {
+		return addressText;
+	}
+
+	public String getVanityText() {
+		return vanityText;
+	}
+
 	private static boolean addressIsDerivedFromPublicKey(final PublicKey publicKey, final byte networkVersion, final Address address) {
 		final Address derivedAddress = Address.fromPublicKey(networkVersion, publicKey);
 		return derivedAddress.equals(address);
@@ -72,5 +99,6 @@ public class KeyPairViewModel implements SerializableEntity {
 		serializer.writeString("privateKey", this.keyPair.getPrivateKey().toString());
 		serializer.writeString("publicKey", this.keyPair.getPublicKey().toString());
 		serializer.writeString("address", Address.fromPublicKey(this.networkVersion, this.keyPair.getPublicKey()).getEncoded());
+		serializer.writeString("vanityText", this.vanityText);
 	}
 }

@@ -1,7 +1,7 @@
 package org.nem.monitor.visitors;
 
+import org.nem.core.i18n.LanguageSupport;
 import org.nem.core.model.NemStatus;
-import org.nem.monitor.config.LanguageSupport;
 import org.nem.monitor.node.NemNodeType;
 
 import java.util.*;
