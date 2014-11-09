@@ -12,11 +12,21 @@ import javax.swing.border.EmptyBorder;
 // TODO 20141108 J-T: i guess i would say comment this class
 // TODO 20141108 J-T: since this is in the ux package i'm less concerned about tests (since we aren't set up for e2e tests)
 
+/**
+ * Window visualizes the progress of the starting the NEM components NCC and
+ * NIS. When NCC is started and local NIS is required and also started the
+ * Browser window displaying the NCC front-end. When NCC is started and a remote
+ * NIS is configured, the browser is also started. Upon starting the browser,
+ * the window is disposed.
+ *
+ */
 public class KeepPatientWindow extends JFrame {
 	public static final KeepPatientWindow window = new KeepPatientWindow();
-	
+
 	private JPanel contentPane;
-	// TODO 20141108 J-T since these are really label,progress-bar pairs, i would suggest having a private internal class and two instance (one for each pair)
+	// TODO 20141108 J-T since these are really label,progress-bar pairs, i
+	// would suggest having a private internal class and two instance (one for
+	// each pair)
 	// > i also don't like the progress bar names ;)
 	// TDO 20141109 T-J: Names corrected, factoring-out not yet done.
 	private JLabel lblNisServer;
@@ -25,12 +35,16 @@ public class KeepPatientWindow extends JFrame {
 	private JLabel lblNccServer;
 
 	/**
-	 * Launch the application.
+	 * Launch the nem monitor. This is targeted for being started via command
+	 * line.
 	 */
 	public static void main(String[] args) {
 		openWindow();
 	}
 
+	/**
+	 * Opens the nem monitor window.
+	 */
 	public static void openWindow() {
 		EventQueue.invokeLater(() -> window.setVisible(true));
 	}
@@ -42,7 +56,9 @@ public class KeepPatientWindow extends JFrame {
 		final Color nemGreen = new Color(0x41ce7c);
 		final Color nemOrange = Color.ORANGE;
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(KeepPatientWindow.class.getClassLoader().getResource("icon_23.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(
+				KeepPatientWindow.class.getClassLoader().getResource(
+						"icon_23.png")));
 		setBackground(nemGreen);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 379, 187);
@@ -54,7 +70,8 @@ public class KeepPatientWindow extends JFrame {
 		gbl_contentPane.columnWidths = new int[] { 0, 0 };
 		gbl_contentPane.rowHeights = new int[] { 60, 0, 0, 0, 0, 0 };
 		gbl_contentPane.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPane.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
 		JTextPane lblNewLabel = new JTextPane();
@@ -110,35 +127,69 @@ public class KeepPatientWindow extends JFrame {
 		gbc_progressBar_1.gridy = 4;
 		contentPane.add(nisProgressBar, gbc_progressBar_1);
 		setTitle(LanguageSupport.message("window.title"));
-		
+
 		final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2 - getSize().height / 2);
+		setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2
+				- getSize().height / 2);
 
 	}
 
 	// TODO 20141108 J-T typo in "description"
 	// TODO 20141108 J-T the lambdas don't need {}
+	// TODO 20141109 T-J done.
 
+	/**
+	 * Creates a new visitor that updates the status message of NCC server
+	 * 
+	 * @return visitor, visitor that updates the NCC status.
+	 */
 	public NodeStatusToStatusDescriptionAdapter addNccDescriptionUpdater() {
-		return new NodeStatusToStatusDescriptionAdapter(NemNodeType.NCC, 
-				description -> lblNccServer.setText(description.getStatusMessage()));
+		return new NodeStatusToStatusDescriptionAdapter(NemNodeType.NCC,
+				description -> lblNccServer.setText(description
+						.getStatusMessage()));
 	}
+
+	/**
+	 * Creates a new visitor that updates the status message of NIS server
+	 * 
+	 * @return visitor, visitor that updates the NIS status.
+	 */
 	public NodeStatusToStatusDescriptionAdapter addNisDescriptionUpdater() {
-		return new NodeStatusToStatusDescriptionAdapter(NemNodeType.NIS, 
-				description -> lblNisServer.setText(description.getStatusMessage()));
+		return new NodeStatusToStatusDescriptionAdapter(NemNodeType.NIS,
+				description -> lblNisServer.setText(description
+						.getStatusMessage()));
 	}
-	
+
+	/**
+	 * Creates a new visitor that updates the progress bar (0-100) of NCC server
+	 * 
+	 * @return visitor, visitor that updates the NCC progress bar.
+	 */
 	public NodeStatusToPercentageAdapter addNccProgressUpdater() {
-		return new NodeStatusToPercentageAdapter(NemNodeType.NCC, 
+		return new NodeStatusToPercentageAdapter(NemNodeType.NCC,
 				percentage -> nccProgressBar.setValue(percentage));
 	}
+
+	/**
+	 * Creates a new visitor that updates the progress bar (0-100) of NCC server
+	 * 
+	 * @return visitor, visitor that updates the NCC progress bar.
+	 */
 	public NodeStatusToPercentageAdapter addNisProgressUpdater() {
-		return new NodeStatusToPercentageAdapter(NemNodeType.NIS, percentage -> nisProgressBar.setValue(percentage));
+		return new NodeStatusToPercentageAdapter(NemNodeType.NIS,
+				percentage -> nisProgressBar.setValue(percentage));
 	}
-	
+
+	/**
+	 * In case localNis is true, then the NIS progress bar is hidden and the 
+	 * NIS text is updated.
+	 * 
+	 * @param localNis defines whether NIS is locally used by NCC
+	 */
 	public void updateLocalNisInformation(Boolean localNis) {
-		if(!localNis) {
-			lblNisServer.setText(LanguageSupport.message("window.ncc.uses.remote.nis"));
+		if (!localNis) {
+			lblNisServer.setText(LanguageSupport
+					.message("window.ncc.uses.remote.nis"));
 			nisProgressBar.setVisible(false);
 		}
 	}

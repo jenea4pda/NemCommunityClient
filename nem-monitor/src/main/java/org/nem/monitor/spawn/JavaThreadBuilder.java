@@ -1,4 +1,4 @@
-package org.nem.monitor;
+package org.nem.monitor.spawn;
 
 import org.nem.core.deploy.*;
 import org.nem.monitor.node.NemNodeType;
@@ -8,20 +8,22 @@ import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 // TODO 20141108: fix javadoc remove commented out code
+// TODO 20141109: done.
 
 /**
- * An abstraction on top of ProcessBuilder for Java processes.
+ * Allows the starting of components as separate threads.
  */
 public class JavaThreadBuilder implements JavaSpawnBuilder {
 	private static final Logger LOGGER = Logger.getLogger(JavaThreadBuilder.class.getName());
-	final public static ExecutorService service = Executors.newFixedThreadPool(2); // TODO 20141108: why 2?
+	final public static ExecutorService service = Executors.newFixedThreadPool(20); // TODO 20141108: why 2?
 
 	private String[] arguments;
 
 	/**
-	 * Creates a new Java process builder.
+	 * Creates a new Java thread builder. 
+	 * Depending on the node type, the configuration file name and node type are passed to common starter.
 	 *
-	 * @param configFilePath
+	 * @param nodeType
 	 */
 	public JavaThreadBuilder(final NemNodeType nodeType) {
 		final String configFilePath = nodeType == NemNodeType.NCC ? "ncc-config.properties" : "nis-config.properties";
@@ -30,7 +32,7 @@ public class JavaThreadBuilder implements JavaSpawnBuilder {
 	}
 
 	/**
-	 * Sets the log file.
+	 * Since threads are spawned, no additional process logs are required.
 	 *
 	 * @param logFile The log file.
 	 */
@@ -38,13 +40,10 @@ public class JavaThreadBuilder implements JavaSpawnBuilder {
 		// TODO 20141108: why is this all commented out?
 		// TODO 20141109: T-J in case threads are started then there is no need to have additional 
 		// TODO           logfiles for the spawning
-		// this.builder.redirectErrorStream(true);
-		// this.builder.redirectOutput(ProcessBuilder.Redirect.appendTo(logFile));
-		// this.builder.directory(logFile.getParentFile());
 	}
 
 	/**
-	 * Starts the process.
+	 * Spawns a new thread to start the component. 
 	 */
 	public void start() throws IOException {
 		LOGGER.info(String.format("Starting Java thread: CommonStarter.start(%s).", arguments.toString()));
