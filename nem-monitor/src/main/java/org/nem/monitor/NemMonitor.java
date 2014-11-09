@@ -100,8 +100,8 @@ public class NemMonitor {
 			statemachine.setLocalNisConfiguredEventConsumer(localNis -> KeepPatientWindow.window.updateLocalNisInformation(localNis));
 			builder.getVisitors().add(statemachine);
 
-			builder.getVisitors().add(KeepPatientWindow.window.addNccDesriptionUpdater());
-			builder.getVisitors().add(KeepPatientWindow.window.addNisDesriptionUpdater());
+			builder.getVisitors().add(KeepPatientWindow.window.addNccDescriptionUpdater());
+			builder.getVisitors().add(KeepPatientWindow.window.addNisDescriptionUpdater());
 			builder.getVisitors().add(KeepPatientWindow.window.addNccProgressUpdater());
 			builder.getVisitors().add(KeepPatientWindow.window.addNisProgressUpdater());
 

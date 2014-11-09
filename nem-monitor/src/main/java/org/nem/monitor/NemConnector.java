@@ -54,6 +54,7 @@ public class NemConnector {
 	// TODO 20141108 J-T: since as far as i can tell, you're only using this to check if nis is local or remote,
 	// > consider changing it to boolean isNisLocal(); if possible, i don't think the rest of the NOM code needs to depend
 	// > on ncc types
+	// TODO 20141109 T-J: That is correct.
 
 	/**
 	 * Request configuration from node.

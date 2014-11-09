@@ -36,6 +36,8 @@ public class JavaThreadBuilder implements JavaSpawnBuilder {
 	 */
 	public void setLogFile(final File logFile) {
 		// TODO 20141108: why is this all commented out?
+		// TODO 20141109: T-J in case threads are started then there is no need to have additional 
+		// TODO           logfiles for the spawning
 		// this.builder.redirectErrorStream(true);
 		// this.builder.redirectOutput(ProcessBuilder.Redirect.appendTo(logFile));
 		// this.builder.directory(logFile.getParentFile());

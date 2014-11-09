@@ -18,9 +18,10 @@ public class KeepPatientWindow extends JFrame {
 	private JPanel contentPane;
 	// TODO 20141108 J-T since these are really label,progress-bar pairs, i would suggest having a private internal class and two instance (one for each pair)
 	// > i also don't like the progress bar names ;)
+	// TDO 20141109 T-J: Names corrected, factoring-out not yet done.
 	private JLabel lblNisServer;
-	private JProgressBar progressBar;
-	private JProgressBar progressBar_1;
+	private JProgressBar nccProgressBar;
+	private JProgressBar nisProgressBar;
 	private JLabel lblNccServer;
 
 	/**
@@ -81,15 +82,15 @@ public class KeepPatientWindow extends JFrame {
 		gbc_lblNccServer.gridy = 1;
 		contentPane.add(lblNccServer, gbc_lblNccServer);
 
-		progressBar = new JProgressBar();
-		progressBar.setBackground(nemOrange);
-		progressBar.setForeground(nemGreen);
+		nccProgressBar = new JProgressBar();
+		nccProgressBar.setBackground(nemOrange);
+		nccProgressBar.setForeground(nemGreen);
 		GridBagConstraints gbc_progressBar = new GridBagConstraints();
 		gbc_progressBar.insets = new Insets(0, 0, 5, 0);
 		gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_progressBar.gridx = 0;
 		gbc_progressBar.gridy = 2;
-		contentPane.add(progressBar, gbc_progressBar);
+		contentPane.add(nccProgressBar, gbc_progressBar);
 
 		lblNisServer = new JLabel("NIS server");
 		lblNisServer.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -100,14 +101,14 @@ public class KeepPatientWindow extends JFrame {
 		gbc_lblNisServer.gridy = 3;
 		contentPane.add(lblNisServer, gbc_lblNisServer);
 
-		progressBar_1 = new JProgressBar();
-		progressBar_1.setBackground(nemOrange);
-		progressBar_1.setForeground(nemGreen);
+		nisProgressBar = new JProgressBar();
+		nisProgressBar.setBackground(nemOrange);
+		nisProgressBar.setForeground(nemGreen);
 		GridBagConstraints gbc_progressBar_1 = new GridBagConstraints();
 		gbc_progressBar_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_progressBar_1.gridx = 0;
 		gbc_progressBar_1.gridy = 4;
-		contentPane.add(progressBar_1, gbc_progressBar_1);
+		contentPane.add(nisProgressBar, gbc_progressBar_1);
 		setTitle(LanguageSupport.message("window.title"));
 		
 		final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -118,32 +119,27 @@ public class KeepPatientWindow extends JFrame {
 	// TODO 20141108 J-T typo in "description"
 	// TODO 20141108 J-T the lambdas don't need {}
 
-	public NodeStatusToStatusDescriptionAdapter addNccDesriptionUpdater() {
-		return new NodeStatusToStatusDescriptionAdapter(NemNodeType.NCC, description -> {
-			lblNccServer.setText(description.getStatusMessage());
-		});
+	public NodeStatusToStatusDescriptionAdapter addNccDescriptionUpdater() {
+		return new NodeStatusToStatusDescriptionAdapter(NemNodeType.NCC, 
+				description -> lblNccServer.setText(description.getStatusMessage()));
 	}
-	public NodeStatusToStatusDescriptionAdapter addNisDesriptionUpdater() {
-		return new NodeStatusToStatusDescriptionAdapter(NemNodeType.NIS, description -> {
-			lblNisServer.setText(description.getStatusMessage());
-		});
+	public NodeStatusToStatusDescriptionAdapter addNisDescriptionUpdater() {
+		return new NodeStatusToStatusDescriptionAdapter(NemNodeType.NIS, 
+				description -> lblNisServer.setText(description.getStatusMessage()));
 	}
 	
 	public NodeStatusToPercentageAdapter addNccProgressUpdater() {
-		return new NodeStatusToPercentageAdapter(NemNodeType.NCC, percentage -> {
-			progressBar.setValue(percentage);
-		});
+		return new NodeStatusToPercentageAdapter(NemNodeType.NCC, 
+				percentage -> nccProgressBar.setValue(percentage));
 	}
 	public NodeStatusToPercentageAdapter addNisProgressUpdater() {
-		return new NodeStatusToPercentageAdapter(NemNodeType.NIS, percentage -> {
-			progressBar_1.setValue(percentage);
-		});
+		return new NodeStatusToPercentageAdapter(NemNodeType.NIS, percentage -> nisProgressBar.setValue(percentage));
 	}
 	
 	public void updateLocalNisInformation(Boolean localNis) {
 		if(!localNis) {
 			lblNisServer.setText(LanguageSupport.message("window.ncc.uses.remote.nis"));
-			progressBar_1.setVisible(false);
+			nisProgressBar.setVisible(false);
 		}
 	}
 }
