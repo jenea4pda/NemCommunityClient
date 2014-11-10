@@ -2,6 +2,7 @@ package org.nem.monitor;
 
 import org.nem.core.deploy.*;
 import org.nem.monitor.node.NemNodeType;
+import org.nem.monitor.spawn.JavaSpawnBuilder;
 
 import java.io.*;
 import java.util.logging.Logger;
