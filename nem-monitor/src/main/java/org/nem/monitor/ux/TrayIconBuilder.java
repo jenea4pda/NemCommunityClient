@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
@@ -165,11 +166,16 @@ public class TrayIconBuilder {
 		for (final NemNodePolicy nodePolicy : this.nodePolicies) {
 			final NemNodeType nodeType = nodePolicy.getNodeType();
 			final NemConnector connector = this.createConnector(nodePolicy);
-			new AsyncTimer(
-					() -> connector.getStatus().thenAccept(status -> visitor.notifyStatus(nodeType, status)),
-					250,
-					new UniformDelayStrategy(1000),
-					null);
+			// TODO 20141110 G-J: have I changed it correctly?
+			final AsyncTimerOptions options = new AsyncTimerOptionsBuilder()
+					.setRecurringFutureSupplier(
+							() -> connector.getStatus().thenAccept(status -> visitor.notifyStatus(nodeType, status))
+					)
+					.setInitialDelay(250)
+					.setDelayStrategy(new UniformDelayStrategy(1000))
+					.setVisitor(null)
+					.create();
+			new AsyncTimer(options);
 		}
 
 		this.trayIcon.setPopupMenu(this.popup);

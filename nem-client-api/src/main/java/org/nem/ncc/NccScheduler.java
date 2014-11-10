@@ -45,11 +45,16 @@ public class NccScheduler implements AutoCloseable {
 	 */
 	public void addTimeSynchronizationTask(final NccTimeSynchronizer nccTimeSynchronizer) {
 		final AsyncTimerVisitor timerVisitor = this.createNamedVisitor("TIME SYNCHRONIZATION");
-		this.timers.add(new AsyncTimer(
-				() -> nccTimeSynchronizer.synchronizeTime(),
-				TIME_SYNC_INITIAL_DELAY,
-				new UniformDelayStrategy(TIME_SYNC_INTERVAL),
-				timerVisitor));
+		// TODO 20141110 G-J: have I changed it correctly?
+		final AsyncTimerOptions options = new AsyncTimerOptionsBuilder()
+				.setRecurringFutureSupplier(
+						nccTimeSynchronizer::synchronizeTime
+				)
+				.setInitialDelay(TIME_SYNC_INITIAL_DELAY)
+				.setDelayStrategy(new UniformDelayStrategy(TIME_SYNC_INTERVAL))
+				.setVisitor(timerVisitor)
+				.create();
+		this.timers.add(new AsyncTimer(options));
 	}
 
 	// TODO 20140928 J-B (minor) might want to add a test that close transitions all times to stopped

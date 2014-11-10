@@ -44,7 +44,9 @@ public class GraphBuilder {
 					this.addNode(peerNode, true);
 					this.addEdge(node, peerNode);
 				});
-		neighbors.getInactiveNodes().stream()
+
+		// TODO 20141110 G-B: I've changed it to busy nodes, but I guess that might not be what we want
+		neighbors.getBusyNodes().stream()
 				.forEach(peerNode -> {
 					this.addNode(peerNode, false);
 					this.addEdge(node, peerNode);
