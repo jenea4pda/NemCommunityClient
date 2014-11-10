@@ -55,6 +55,7 @@ public class TransferViewModelTest {
 		Assert.assertThat(viewModel.isEncrypted(), IsEqual.equalTo(false));
 		Assert.assertThat(viewModel.isConfirmed(), IsEqual.equalTo(false));
 		Assert.assertThat(viewModel.getConfirmations(), IsEqual.equalTo(0L));
+		Assert.assertThat(viewModel.getBlockHeight(), IsEqual.equalTo(0L));
 		Assert.assertThat(viewModel.getDirection(), IsEqual.equalTo(0));
 	}
 
@@ -90,6 +91,7 @@ public class TransferViewModelTest {
 		Assert.assertThat(viewModel.isEncrypted(), IsEqual.equalTo(false));
 		Assert.assertThat(viewModel.isConfirmed(), IsEqual.equalTo(true));
 		Assert.assertThat(viewModel.getConfirmations(), IsEqual.equalTo(6L));
+		Assert.assertThat(viewModel.getBlockHeight(), IsEqual.equalTo(7L));
 		Assert.assertThat(viewModel.getDirection(), IsEqual.equalTo(0));
 	}
 
@@ -116,7 +118,7 @@ public class TransferViewModelTest {
 		final JSONObject jsonObject = JsonSerializer.serializeToJson(viewModel);
 
 		// Assert:
-		Assert.assertThat(jsonObject.size(), IsEqual.equalTo(12));
+		Assert.assertThat(jsonObject.size(), IsEqual.equalTo(13));
 		Assert.assertThat(jsonObject.get("id"), IsEqual.equalTo(transactionHash.getShortId()));
 		Assert.assertThat(jsonObject.get("hash"), IsEqual.equalTo(transactionHash.toString()));
 		Assert.assertThat(jsonObject.get("sender"), IsEqual.equalTo(sender.getAddress().toString()));
@@ -128,6 +130,7 @@ public class TransferViewModelTest {
 		Assert.assertThat(jsonObject.get("encrypted"), IsEqual.equalTo(0));
 		Assert.assertThat(jsonObject.get("confirmed"), IsEqual.equalTo(0));
 		Assert.assertThat(jsonObject.get("confirmations"), IsEqual.equalTo(0L));
+		Assert.assertThat(jsonObject.get("blockHeight"), IsEqual.equalTo(0L));
 		Assert.assertThat(jsonObject.get("direction"), IsEqual.equalTo(1));
 	}
 
@@ -153,7 +156,7 @@ public class TransferViewModelTest {
 		final JSONObject jsonObject = JsonSerializer.serializeToJson(viewModel);
 
 		// Assert:
-		Assert.assertThat(jsonObject.size(), IsEqual.equalTo(12));
+		Assert.assertThat(jsonObject.size(), IsEqual.equalTo(13));
 		Assert.assertThat(jsonObject.get("id"), IsEqual.equalTo(transactionHash.getShortId()));
 		Assert.assertThat(jsonObject.get("hash"), IsEqual.equalTo(transactionHash.toString()));
 		Assert.assertThat(jsonObject.get("sender"), IsEqual.equalTo(sender.getAddress().toString()));
@@ -165,6 +168,7 @@ public class TransferViewModelTest {
 		Assert.assertThat(jsonObject.get("encrypted"), IsEqual.equalTo(0));
 		Assert.assertThat(jsonObject.get("confirmed"), IsEqual.equalTo(1));
 		Assert.assertThat(jsonObject.get("confirmations"), IsEqual.equalTo(6L));
+		Assert.assertThat(jsonObject.get("blockHeight"), IsEqual.equalTo(7L));
 		Assert.assertThat(jsonObject.get("direction"), IsEqual.equalTo(2));
 	}
 
@@ -384,6 +388,7 @@ public class TransferViewModelTest {
 		// Assert:
 		Assert.assertThat(viewModel.isConfirmed(), IsEqual.equalTo(true));
 		Assert.assertThat(viewModel.getConfirmations(), IsEqual.equalTo(1L));
+		Assert.assertThat(viewModel.getBlockHeight(), IsEqual.equalTo(7L));
 	}
 
 	//endregion

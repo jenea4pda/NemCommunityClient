@@ -716,6 +716,10 @@ $sendNem-textbox-hPadding: 8px;
 	@extend %clearfix;
 }
 
+.sendNem-row--fee {
+	margin-bottom: 7px;
+}
+
 .sendNem-block {
 	margin-top: 17px;
 }
@@ -733,7 +737,8 @@ $sendNem-textbox-hPadding: 8px;
 	}
 }
 
-.sendNem-checkbox {
+.sendNem-checkbox,
+.useMinimumFee-checkbox {
 	vertical-align: -2px;
 }
 

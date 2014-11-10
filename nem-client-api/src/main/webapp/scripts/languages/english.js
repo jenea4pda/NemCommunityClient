@@ -104,7 +104,7 @@ define({
 				encrypt: 'Encrypt message',
 				fee: 'Fee',
 				dueBy: 'Due by',
-				resetFee: 'Reset to minimum fee',
+				useMinimumFee: 'Use minimum fee',
 				hours: 'hours',
 				password: 'Password',
 				send: 'Send',
@@ -162,6 +162,7 @@ define({
 				encrypted: 'Message is encrypted',
 				time: 'Timestamp',
 				confirmations: 'Confirmations',
+				confirmationsUnknown: 'Unknown',
 				amount: 'Amount',
 				fee: 'Fee'
 			},
@@ -460,6 +461,7 @@ define({
 				noMessage: 'No message',
 				encrypted: 'Message is encrypted',
 				view: 'View',
+				confirmationsUnknown: 'Unknown',
 				pending: 'Pending',
 				seeAll: 'See all transactions',
 				noTransactions: 'No transactions have been performed yet'
@@ -506,6 +508,7 @@ define({
 				noMessage: 'No message',
 				encrypted: 'Message is encrypted',
 				view: 'View',
+				confirmationsUnknown: 'Unknown',
 				pending: 'Pending',
 				noTransactions: 'No transactions have been performed yet',
 				loading: 'Loading more transactions...'

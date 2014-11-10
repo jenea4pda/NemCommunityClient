@@ -139,6 +139,25 @@ public class NccControllerTest {
 
 	//endregion
 
+	//region getBlockHeight
+
+	@Test
+	public void getBlockHeightReturnsNisBlockHeight() {
+		// Arrange:
+		final TestContext context = new TestContext();
+		Mockito.when(context.chainServices.getChainHeightAsync(context.nisEndpoint))
+				.thenReturn(CompletableFuture.completedFuture(new BlockHeight(8)));
+
+		// Act:
+		final BlockHeight height = context.controller.getBlockHeight();
+
+		// Assert:
+		Assert.assertThat(height, IsEqual.equalTo(new BlockHeight(8)));
+		Mockito.verify(context.chainServices, Mockito.only()).getChainHeightAsync(context.nisEndpoint);
+	}
+
+	//endregion
+
 	private static class TestContext {
 		private final NodeEndpoint nisEndpoint = NodeEndpoint.fromHost("10.0.0.99");
 		private final ApplicationMetaData metaData;

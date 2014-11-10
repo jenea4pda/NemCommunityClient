@@ -369,7 +369,17 @@ define(function(require) {
                     var keypath = 'layout.' + i;
                     var currentLayout = self.get(keypath);
 
-                    if (paramsChanged || !currentLayout || (currentLayout.name !== layout.name)) {
+                    if (!layout.alreadyInit && layout.initOnce) {
+                        layout.initOnce();
+                        layout.alreadyInit = true;
+                    }
+                        
+                    if (paramsChanged && layout.paramsChanged) {
+                        var abort = layout.paramsChanged(params);
+                        if (abort) return;
+                    }
+
+                    if (!currentLayout || (currentLayout.name !== layout.name)) {
                         var template = require(layout.template);
                         if (currentLayout && currentLayout.leave) {
                             $.each(currentLayout.leave, function() {
@@ -378,10 +388,6 @@ define(function(require) {
                         }
 
                         // Init
-                        if (!layout.alreadyInit && layout.initOnce) {
-                            layout.initOnce();
-                            layout.alreadyInit = true;
-                        }
                         if (layout.initEverytime) {
                             var abort = layout.initEverytime(params);
                             if (abort) return;

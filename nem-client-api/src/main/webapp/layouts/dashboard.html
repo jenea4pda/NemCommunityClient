@@ -136,7 +136,13 @@
 									<td class="txList-cell txList-col--details" on-click="viewTransaction:{{.}}">{{texts.dashboard.transactions.view}}</td>
 									<td class="txList-col--confirmations">
 										{{^.confirmed}}{{texts.dashboard.transactions.pending}}{{/}}
-										{{#.confirmed}}{{.confirmations}}{{/}}
+										{{#.confirmed}}
+											{{#if blockchainHeight}}
+												{{blockchainHeight - .blockHeight}}
+											{{else}}
+												{{texts.dashboard.transactions.confirmationsUnknown}}
+											{{/if}}
+										{{/}}
 									</td>
                                     <td class="txList-cell txList-col--fee">{{#.isOutgoing || .isSelf}}-{{/}}{{{formattedFee}}}</td>
                                     <td class="txList-cell txList-col--amount">

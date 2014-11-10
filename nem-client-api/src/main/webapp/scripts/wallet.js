@@ -172,7 +172,7 @@ define(['jquery', 'ncc', 'NccLayout', 'Utils'], function($, ncc, NccLayout, Util
                 decideSidebarScrollability();
             });
         },
-        initEverytime: function(params) {
+        paramsChanged: function(params) {
             var wallet = (params && params.wallet) || Utils.getUrlParam('wallet');
             if (!wallet) {
                 ncc.loadPage('landing');

@@ -7,7 +7,7 @@ define(['NccModal', 'Utils'], function(NccModal, Utils) {
                 return this.get('requestData.amount') + this.get('requestData.fee');
             },
             formattedTotal: function() {
-                return Utils.formatCurrency(this.get('total'), false, true, false);
+                return Utils.formatCurrency(this.get('total'), false, true, true);
             }
         },
 		confirm: function() {

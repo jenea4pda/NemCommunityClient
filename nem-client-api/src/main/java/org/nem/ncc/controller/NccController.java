@@ -1,6 +1,7 @@
 package org.nem.ncc.controller;
 
 import org.nem.core.metadata.ApplicationMetaData;
+import org.nem.core.model.primitive.BlockHeight;
 import org.nem.core.node.NisNodeInfo;
 import org.nem.ncc.connector.PrimaryNisConnector;
 import org.nem.ncc.controller.viewmodels.*;
@@ -78,5 +79,15 @@ public class NccController {
 	@RequestMapping(value = "/info/nis/check", method = RequestMethod.GET)
 	public String isNisRunning() {
 		return this.connector.isConnected() ? "1" : "0";
+	}
+
+	/**
+	 * Gets the block height of the NIS node.
+	 *
+	 * @return The current NIS block height.
+	 */
+	@RequestMapping(value = "/info/nis/chain/height", method = RequestMethod.GET)
+	public BlockHeight getBlockHeight() {
+		return this.connector.forward(this.chainServices::getChainHeightAsync);
 	}
 }

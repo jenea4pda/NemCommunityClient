@@ -33,13 +33,15 @@ define(['NccModal', 'Utils'], function(NccModal, Utils) {
                 set: function(fee) {
                     this.set('formattedFee', Utils.formatCurrency(fee, false, true, true));
                 }
+            },
+            formattedMinimumFee: function() {
+                return Utils.formatCurrency(this.get('minimumFee'), false, true, true);
             }
         },
         /**
-         * @param {boolean} args.forceReset
-         * @param {boolean} args.silent
+         * @param {boolean} options.silent
          */
-        resetFee: function(args) {
+        resetFee: function(options) {
             var requestData = {
                 wallet: ncc.get('wallet.name'),
                 account: ncc.get('activeAccount.address'),
@@ -53,20 +55,8 @@ define(['NccModal', 'Utils'], function(NccModal, Utils) {
             
             ncc.postRequest('wallet/account/transaction/validate', requestData, 
                 function(data) {
-                    var currentFee = self.get('fee');
-                    var newFee = data.fee;
-                    if (newFee || newFee === 0) {
-                        if (args.forceReset || !currentFee || currentFee < newFee) {
-                            self.set('fee', newFee);
-                            self.set('isFeeAutofilled', true);
-                        }
-                    }
-
-                    var encryptionPossible = self.get('recipientValid') && data.encryptionSupported;
-                    self.set('encryptionPossible', encryptionPossible);
-                    if (!encryptionPossible) {
-                        self.set('encrypted', false);
-                    }
+                    self.set('minimumFee', data.fee);
+                    self.set('encryptionPossible', data.encryptionSupported && self.get('recipientValid'));1                    
                 }, 
                 {
                     altFailCb: function(faultId, error) {
@@ -75,7 +65,7 @@ define(['NccModal', 'Utils'], function(NccModal, Utils) {
                             return true;
                         }
                     }
-                }, args.silent
+                }, options.silent
             );
         },
         validateTx: function() {
@@ -89,6 +79,7 @@ define(['NccModal', 'Utils'], function(NccModal, Utils) {
             this.set('encrypted', false);
             this.set('dueBy', '12');
             this.set('password', '');
+            this.set('useMinimumFee', true);
         },
         sendTransaction: function() {
             var requestData = {
@@ -115,21 +106,30 @@ define(['NccModal', 'Utils'], function(NccModal, Utils) {
             this.resetDefaultData();
             
             this.observe({
-                fee: function(newValue, oldValue, keypath) {
-                    this.set('isFeeAutofilled', false);
-                },
                 'amount recipient message encrypt': (function() {
                     var t;
                     return function() {
                         clearTimeout(t);
                         t = setTimeout(function() {
-                            self.resetFee({
-                                forceReset: self.get('isFeeAutofilled'), 
-                                silent: true
-                            });
+                            self.resetFee({ silent: true });
                         }, 500);
                     }
-                })()
+                })(),
+                encryptionPossible: function(encryptionPossible) {
+                    if (!encryptionPossible) {
+                        this.set('encrypted', false);
+                    }
+                },
+                useMinimumFee: function(useMinimumFee) {
+                    if (useMinimumFee) {
+                        this.set('fee', this.get('minimumFee'));
+                    }
+                },
+                minimumFee: function(minimumFee) {
+                    if (this.get('useMinimumFee')) {
+                        this.set('fee', minimumFee);
+                    }
+                }
             });
 
             this.observe('recipient', (function() {

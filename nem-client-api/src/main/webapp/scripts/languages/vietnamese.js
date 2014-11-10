@@ -164,6 +164,7 @@ define({
 				encrypted: 'Thông điệp được mã hoá',
 				time: 'Mốc thời gian',
 				confirmations: 'Số xác nhận',
+				confirmationsUnknown: 'Không rõ',
 				amount: 'Số lượng',
 				fee: 'Chi phí'
 			},
@@ -462,6 +463,7 @@ define({
 				noMessage: 'Không có',
 				encrypted: 'Thông điệp được mã hoá',
 				view: 'Xem',
+				confirmationsUnknown: 'Không rõ',
 				pending: 'Đang chờ xác nhận',
 				seeAll: 'Xem tất cả giao dịch',
 				noTransactions: 'Chưa có giao dịch nào'
@@ -508,6 +510,7 @@ define({
 				noMessage: 'Không có',
 				encrypted: 'Thông điệp được mã hoá',
 				view: 'Xem',
+				confirmationsUnknown: 'Không rõ',
 				pending: 'Đang chờ xác nhận',
 				noTransactions: 'Chưa có giao dịch nào',
 				loading: 'Đang tải thêm các giao dịch...'

@@ -35,19 +35,20 @@ The view model used by the NCC server.
 	"importance": 0.012124950571331367,
 	"label": null,
 	"publicKey": "03c55bd250e56c292ed4c898b0883676313283251d21b6a9099bb989db99d736d2",
-	"transactions": [{
-		"timeStamp": 1408700457000,
-		"amount": 15000000000,
-		"encrypted": 0,
-		"sender": "TDUDEHNJR324TIYOYON5T4Z6ZZSCAAAAFDSG56DC",
-		"fee": 1000000000,
-		"recipient": "TATHIESMY6QO6XKPCBZFEVVVFVL2UT3ESDHAVGL7",
-		"id": -1946165266266052414,
-		"message": "Today is friday!\n\nThe international beer's (every friday) day!!",
-		"confirmations": 1742,
-		"confirmed": 1,
-		"hash": "e4fdd500660228c25c26e3b72200fd5aa4ea601b204ca1305d18fe58efd4ecbb",
-		"direction": 1
+	"transactions": [{																	# collection of [TransferViewModel](viewModel.md#transferviewmodel)
+		"id": "19283746535271819",
+		"hash": "1e9d8feec7206ccc3df254bde2a98372b61eef56ac5d907479bc8cc78aa8d1bd",
+		"sender" : "TCN33UYH7OREBBFPA4D7GAE6TALNAZJOF6ZPDVA2",
+		"timeStamp" : 1234211,
+		"fee": 1.0,
+		"recipient": "TBYDNCLNEGESF5EWRFWFJU7RNCPWOOQH5LMRSQ5A",
+		"amount":  10000.0,
+		"message": "My first message",
+		"encrypt": 1,
+		"confirmed" : 1,
+		"confirmations" : 1440,
+		"blockHeight" : 80765,
+		"direction": 0 
 	},
 	{
 		"timeStamp": 1408403524000,
@@ -61,6 +62,7 @@ The view model used by the NCC server.
 		"confirmations": 6564,
 		"confirmed": 1,
 		"hash": "1e9d8feec7206ccc3df254bde2a98372b61eef56ac5d907479bc8cc78aa8d1bd",
+	"blockHeight" : 80765,
 		"direction": 1
 	}],
 	"foragedBlocks": 97,
@@ -305,6 +307,28 @@ Only a local NIS can be booted.
 }
 ```
 
+### TransferViewModel
+
+```
+{
+	"id": "19283746535271819",
+	"hash": "1e9d8feec7206ccc3df254bde2a98372b61eef56ac5d907479bc8cc78aa8d1bd",	#
+	"sender" : "TCN33UYH7OREBBFPA4D7GAE6TALNAZJOF6ZPDVA2",
+	"timeStamp" : 1234211,
+	"fee": 1.0,
+	"recipient": "TBYDNCLNEGESF5EWRFWFJU7RNCPWOOQH5LMRSQ5A",
+	"amount":  10000.0,
+	"message": "My first message",												# optional, only if message available
+	"encrypt": 1,																# optional, 1 - encrypted
+																				# 0 - clear text
+	"confirmed" : 1,
+	"confirmations" : 1440,
+	"blockHeight" : 80765,
+	"direction": 0																# 1 - incoming, 
+																				# 2 - outgoing, 
+																				# 3 - self
+}
+```
 
 ### PartialTransferInformationRequest
 

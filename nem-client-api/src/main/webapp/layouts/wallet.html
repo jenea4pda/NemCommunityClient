@@ -237,13 +237,13 @@
 		<label for="chk-encrypt-message">{{texts.modals.sendNem.encrypt}}</label>
 	</div>
 	<div class="sendNem-block">
-		<div class="sendNem-row">
+		<div class="sendNem-row sendNem-row--fee">
 			<div class="sendNem-control sendNem-control--fee sendNem-control--half">
 				<label class="sendNem-label">{{texts.modals.sendNem.fee}}</label>
 				<div class="restOfWidth">
 					<span class="sendNem-control-unit unit">NEM</span>
 					<div class="restOfWidth">
-						<input class="sendNem-textbox sendNem-textbox--fee js-sendNem-fee-textbox" value="{{formattedFee}}" on-keypress="sendFormKeypress" />
+						<input class="sendNem-textbox sendNem-textbox--fee js-sendNem-fee-textbox" value="{{formattedFee}}" on-keypress="sendFormKeypress" disabled="{{useMinimumFee}}" />
 					</div>
 				</div>
 			</div>
@@ -257,7 +257,13 @@
 				</div>
 			</div>
 		</div>
-		<a href="javascript:;" class="sendNem-setFeeButton" on-click="resetFee({forceReset: true, silent: false})">{{texts.modals.sendNem.resetFee}}</a>
+		<input class="useMinimumFee-checkbox" type="checkbox" checked="{{useMinimumFee}}" id="chk-useMinimumFee" />
+		<label for="chk-useMinimumFee">
+			{{texts.modals.sendNem.useMinimumFee}}
+			{{#if !useMinimumFee}}
+				({{formattedMinimumFee}} NEM)
+			{{/if}}
+		</label>
 	</div>
 	<input class="sendNem-control sendNem-textbox sendNem-block" type="password" placeholder="{{texts.modals.sendNem.password}}" value="{{password}}" on-keypress="sendFormKeypress" />
 	<div class="sendNem-submit sendNem-block">
@@ -328,11 +334,11 @@
 			</tr>
 			<tr>
 				<td class="txDetails-cell--label">{{texts.modals.transactionDetails.sender}}</td>
-				<td class="txDetails-cell--content">{{formattedSender}}</td>
+				<td class="txDetails-cell--content">{{.formattedSender}}</td>
 			</tr>
 			<tr>
 				<td class="txDetails-cell--label">{{texts.modals.transactionDetails.recipient}}</td>
-				<td class="txDetails-cell--content">{{formattedRecipient}}</td>
+				<td class="txDetails-cell--content">{{.formattedRecipient}}</td>
 			</tr>
 			<tr>
 				<td class="txDetails-cell--label">{{texts.modals.transactionDetails.message}}</td>
@@ -345,11 +351,17 @@
 			</tr>
 			<tr>
 				<td class="txDetails-cell--label">{{texts.modals.transactionDetails.time}}</td>
-				<td class="txDetails-cell--content">{{formattedDate}}</td>
+				<td class="txDetails-cell--content">{{.formattedDate}}</td>
 			</tr>
 			<tr>
 				<td class="txDetails-cell--label">{{texts.modals.transactionDetails.confirmations}}</td>
-				<td class="txDetails-cell--content">{{.confirmations}}</td>
+				<td class="txDetails-cell--content">
+					{{#if blockchainHeight}}
+						{{blockchainHeight - .blockHeight}}
+					{{else}}
+						{{texts.modals.transactionDetails.confirmationsUnknown}}
+					{{/if}}
+				</td>
 			</tr>
 			<tr>
 				<td class="txDetails-cell--label">{{texts.modals.transactionDetails.amount}}</td>

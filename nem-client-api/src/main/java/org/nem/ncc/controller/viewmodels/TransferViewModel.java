@@ -29,6 +29,7 @@ public class TransferViewModel implements SerializableEntity {
 
 	private boolean isConfirmed;
 	private long confirmations;
+	private long blockHeight;
 	private final int direction; // 1 - incoming, 2 - outgoing, 3 - self
 
 	/**
@@ -77,6 +78,7 @@ public class TransferViewModel implements SerializableEntity {
 		}
 
 		this.confirmations = 0;
+		this.blockHeight = 0;
 		this.isConfirmed = false;
 
 		this.direction =
@@ -98,6 +100,7 @@ public class TransferViewModel implements SerializableEntity {
 		this(metaDataPair.getTransaction(), relativeAccountAddress);
 
 		this.confirmations = lastBlockHeight.subtract(metaDataPair.getMetaData().getHeight()) + 1;
+		this.blockHeight = metaDataPair.getMetaData().getHeight().getRaw();
 		this.isConfirmed = true;
 	}
 
@@ -201,6 +204,16 @@ public class TransferViewModel implements SerializableEntity {
 	}
 
 	/**
+	 * Gets the height of the block that includes the transaction
+	 * or zero if the transaction is unconfirmed.
+	 *
+	 * @return The height of the block that includes the transaction.
+	 */
+	public long getBlockHeight() {
+		return this.blockHeight;
+	}
+
+	/**
 	 * Gets the transaction direction relative to the reference account.
 	 *
 	 * @return The transaction direction.
@@ -241,6 +254,7 @@ public class TransferViewModel implements SerializableEntity {
 
 		serializer.writeInt("confirmed", this.isConfirmed ? 1 : 0);
 		serializer.writeLong("confirmations", this.confirmations);
+		serializer.writeLong("blockHeight", this.blockHeight);
 		serializer.writeInt("direction", this.direction);
 	}
 }

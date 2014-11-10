@@ -261,7 +261,7 @@ Gets information about the specified account and incoming and outgoing transacti
 
 * Request Method: _POST_
 * Request: [AccountHashRequest](viewModel.md#accounthashrequest)
-* Response: [AccountTransactionsPair](viewModel.md#accounttransactionspair)
+* Response: [TransferViewModel](viewModel.md#transferviewmodel)
 * Dependent from NIS: _Yes_
 
 ### /account/harvests
