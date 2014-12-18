@@ -43,22 +43,22 @@
 		common: {
 			success: 'Успешно', //title of the Success message modals
 			appStatus: {
-				nccUnknown: 'NCC status is unknown',
+				nccUnknown: 'Статус NCC неизвестен ',
 				nccUnavailable: 'NCC не доступен',
-				nccStarting: 'NCC is starting...',
-				nisUnknown: 'NIS status is unknown',
+				nccStarting: 'NCC запускается...',
+				nisUnknown: 'Статус NIS неизвестен ',
 				nisUnavailable: 'NIS не доступен',
 				nisStarting: 'NIS is starting...',
-				notBooted: 'NIS requires to be booted. Please open your wallet and boot a local node via the popup dialog or configure the auto-boot setting.',
-				booting: 'Booting NIS...',
-				nisInfoNotAvailable: 'NIS info is not avaiable yet. Trying to retrieve NIS info...',
-				synchronizing: 'NIS is synchronizing. At block {{1}}, est. {{2}} behind.',
+				notBooted: 'NIS требует перезагрузки. Пожалуйста откройте Ваш кошелёк в local node  через всплывающий диалог или сконфигурируйте настройки автозагрузки.',
+				booting: 'Загрузка NIS...',
+				nisInfoNotAvailable: 'Информация о NIS недоступна. Производится поиск...',
+				synchronizing: 'NIS синхронизируется. At block {{1}}, est. {{2}} behind.',
 				daysBehind: {
-					0: 'less than 1 day',
-					1: '1 day',
-					many: '{{1}} days'
+					0: 'менее чем 1 день',
+					1: '1 день',
+					many: '{{1}} дней'
 				},
-				synchronized: 'NIS is synchronized!'
+				synchronized: 'NIS синхронизирован!'
 			}
 		},
 		modals: {
@@ -71,13 +71,13 @@
 				no: 'Нет'
 			},
 			settings: {
-				title: 'Settings',
+				title: 'Настройки',
 				language: {
-					label: 'Language'
+					label: 'Язык'
 				},
 				remoteServer: {
-					tabTitle: 'Remote Server',
-					protocol: 'Protocol',
+					tabTitle: 'Удалённый Сервер',
+					protocol: 'Протокол',
 					protocolOptions: {
 						http: 'HTTP'
 					},
@@ -85,14 +85,14 @@
 					port: 'Port'
 				},
 				autoBoot: {
-					tabTitle: 'Auto-boot',
-					name: 'Node name',
-					account: 'Account',
-					primaryAccount: 'Primary Account',
-					auto: 'Auto boot when a wallet is opened'
+					tabTitle: 'Авто-загрузка',
+					name: 'Имя Node',
+					account: 'Аккаунт',
+					primaryAccount: 'Главный Аккаунт',
+					auto: 'Автоматическая загрузка при открытом кошельке'
 				},
-				save: 'Save',
-				saveSuccess: 'Settings have been saved successfully'
+				save: 'Сохранить',
+				saveSuccess: 'Настройки успешно сохранены'
 			},
 			sendNem: {
 				title: 'Послать NEM',
@@ -100,46 +100,46 @@
 				nullLabelDesc: "Этот аккаунт не имеет маркировки",
 				amount: 'Сумма',
 				recipient: "Аккаунт получателя",
-				recipientValidation: 'Account addresses must be 40 character long excluding dashes',
+				recipientValidation: 'Адрес аккаунта должен содержать 40 знаков помимо тире.',
 				message: 'Сообщение',
 				encrypt: 'Зашифрованное сообщение',
 				fee: 'Оплата',
 				feeValidation: 'Fee must not be less than the minimum fee',
 				dueBy: 'В течение',
-				useMinimumFee: 'Use minimum fee',
+				useMinimumFee: 'Использовать минимальную плату',
 				hours: 'часов',
 				password: 'Пароль',
-				passwordValidation: 'Password must not be blank',
+				passwordValidation: 'Пароль не может быть пустым',
 				send: 'Послать',
-				cancel: 'Cancel',
+				cancel: 'Отмена',
 				sending: 'Посылается...',
 				successMessage: 'Транзакция была успешно послана!',
 				txConfirm: {
-					title: 'Confirm Transaction',
-					amount: 'Amount',
+					title: 'Подтверждение транзакции',
+					amount: 'Сумма',
 					to: 'To',
-					fee: 'Fee',
-					dueBy: 'Due by',
-					hours: 'hour(s)',
-					total: 'Total',
-					message: 'Message',
-					encrypted: 'Message is encrypted',
-					noMessage: 'No message',
-					cancel: 'Cancel',
-					confirm: 'Confirm',
-					sending: 'Sending...'
+					fee: 'Плата',
+					dueBy: 'В течении',
+					hours: 'час(ов)',
+					total: 'Всего',
+					message: 'Сообщение',
+					encrypted: 'Сообщение защифрованно',
+					noMessage: 'Нет сообщений',
+					cancel: 'Отмена',
+					confirm: 'Подтвердить',
+					sending: 'Посылка...'
 				},
 				notBootedWarning: {
 					title: 'Узел не был загружен!',
 					message: 'Вы должны загрузить локальный узел перед тем, как Вы сможете посылать NEM!'
 				},
 				bootingWarning: {
-					title: 'Node is being booted',
-					message: 'Please wait until booting process is done to send your transaction.'
+					title: 'Node будет перезагружен',
+					message: 'Пожалуйста дождитесь окончания перезагрузки,чтобы завершить транзакцию..'
 				}
 			},
 			clientInfo: {
-				title: 'Client info',
+				title: 'Информация о клиенте',
 				ncc: 'NEM Community Client - NCC',
 				signer: 'Владелец подписи',
 				remoteServer: 'Удалённый Сервер',
@@ -192,7 +192,7 @@
 				create: 'Создать'
 			},
 			createRealAccountData: {
-				title: 'Create real account data',
+				title: 'Создание реального аккаунта',
 				message: 'The below data is for your real account after NEM launches. Save the the address, the public key, and most importantly the private key somewhere safe. If you lose the private key, your account and all your real NEMs will be lost FOREVER!',
 				address: 'Address',
 				publicKey: 'Public key',
